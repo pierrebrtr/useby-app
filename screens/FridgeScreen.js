@@ -16,6 +16,7 @@ import ModalLogin from "../components/ModalLogin";
 import NotificationButton from "../components/NotificationButton";
 import Notifications from "../components/Notifications";
 import { SwitchActions } from "react-navigation";
+import LottieView from "lottie-react-native";
 
 function mapStateToProps(state) {
   return { action: state.action, name: state.name };
@@ -49,11 +50,19 @@ class FridgeScreen extends React.Component {
     opacity: new Animated.Value(1)
   };
 
+  useEffect = () => {
+    const playAnimation = this.props.navigation.addListener("didFocus", () => {
+      if (this.animation) this.animation.play();
+    });
+    return () => playAnimation.remove();
+  };
+
   componentDidUpdate() {
     this.toggleMenu();
   }
 
   componentDidMount() {
+    this.useEffect();
     StatusBar.setBarStyle("dark-content", true);
 
     if (Platform.OS == "android") {
@@ -135,25 +144,36 @@ class FridgeScreen extends React.Component {
           }}
         >
           <SafeAreaView>
-            <ScrollView>
-              <TitleBar>
-                <TouchableOpacity
-                  onPress={this.handleAvatar}
-                  style={{ position: "absolute", top: 0, left: 20 }}
-                >
-                  <Avatar />
-                </TouchableOpacity>
+            <TitleBar>
+              <TouchableOpacity
+                onPress={this.handleAvatar}
+                style={{ position: "absolute", top: 0, left: 20 }}
+              >
+                <Avatar />
+              </TouchableOpacity>
 
-                <TouchableOpacity
-                  onPress={() => this.props.openNotif()}
-                  style={{ position: "absolute", right: 20, top: 5 }}
-                >
-                  <NotificationButton />
-                </TouchableOpacity>
-              </TitleBar>
-            </ScrollView>
+              <TouchableOpacity
+                onPress={() => this.props.openNotif()}
+                style={{ position: "absolute", right: 20, top: 5 }}
+              >
+                <NotificationButton />
+              </TouchableOpacity>
+            </TitleBar>
           </SafeAreaView>
         </AnimatedContainer>
+        <EmptyView>
+          <ChildView>
+            <LottieView
+              source={require("../assets/lottie-loading-text.json")}
+              autoPlay={true}
+              loop={true}
+              ref={animation => {
+                this.animation = animation;
+              }}
+            />
+            <Text>Ton frigo est vide</Text>
+          </ChildView>
+        </EmptyView>
         <ModalLogin />
       </RootView>
     );
@@ -164,6 +184,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(FridgeScreen);
 
 const RootView = styled.View`
   background: black;
+
   flex: 1;
 `;
 
@@ -178,7 +199,35 @@ const AnimatedContainer = Animated.createAnimatedComponent(Container);
 
 const TitleBar = styled.View`
   width: 100%;
-  height: 150px;
+  height: 100px;
   margin-top: 50px;
   padding-left: 80px;
+`;
+
+const EmptyView = styled.View`
+  z-index: 0;
+  top: 100px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+`;
+const ChildView = styled.View`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: -100px;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Text = styled.Text`
+  padding-top: 200px;
+  color: #b8bece;
+  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
 `;

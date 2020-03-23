@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Dimensions } from "react-native";
-import LottieView from "lottie-react-native";
 import { connect } from "react-redux";
 import ProgressCircle from "react-native-progress-circle";
 
@@ -63,7 +62,7 @@ class HomeCard extends React.Component {
         <Title>Mon frigo</Title>
         <Row>
           <Item>
-            <Icon source={require("../assets/banana.png")} />
+            <Icon source={require("../assets/banana-line.png")} />
             <TextContainer>
               <Text>Bananes</Text>
               <SubText>Infos supplémentaires</SubText>
@@ -112,7 +111,7 @@ class HomeCard extends React.Component {
             </CView>
           </Item>
           <Item>
-            <Icon source={require("../assets/cheese.png")} />
+            <Icon source={require("../assets/cheese-line.png")} />
             <TextContainer>
               <Text>Fromage</Text>
               <SubText>Infos supplémentaires</SubText>
@@ -153,7 +152,7 @@ const Container = styled.View`
   margin: 10px 20px;
   border-radius: 14px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `;
 
 const Title = styled.Text`

@@ -215,7 +215,7 @@ const Text = styled.Text`
 
 const items = [
   {
-    logo: require("../assets/tomato.png"),
+    logo: require("../assets/tomato-line.png"),
     title: "Tomates périmées",
     text: "Attention à vos tomates",
     date: "23 Jan"

@@ -183,8 +183,9 @@ class HomeScreen extends React.Component {
                 >
                   <Avatar />
                 </TouchableOpacity>
-                <Title>Bonjour,</Title>
-                <Name>{this.props.name}</Name>
+                <Title>Qu'allons nous faire aujourd'hui ?</Title>
+                <Name>Bonjour, {this.props.name}</Name>
+                {/* <State>Etat : Presque vide</State> */}
                 <TouchableOpacity
                   onPress={() => this.props.openNotif()}
                   style={{ position: "absolute", right: 20, top: 5 }}
@@ -192,14 +193,17 @@ class HomeScreen extends React.Component {
                   <NotificationButton />
                 </TouchableOpacity>
               </TitleBar>
+              <HomeCardView>
+                <Subtitle>Infos</Subtitle>
+                <HomeCard navigation={this.props.navigation} />
+              </HomeCardView>
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 style={{
                   flexDirection: "row",
-                  padding: 20,
-                  paddingLeft: 12,
-                  paddingTop: 30
+                  marginBottom: 30,
+                  paddingLeft: 10
                 }}
               >
                 {logos.map((logo, index) => (
@@ -211,9 +215,6 @@ class HomeScreen extends React.Component {
                   </TouchableOpacity>
                 ))}
               </ScrollView>
-              <Subtitle>Infos</Subtitle>
-
-              <HomeCard navigation={this.props.navigation} />
 
               <Subtitle>Continue learning</Subtitle>
               <ScrollView
@@ -251,21 +252,6 @@ class HomeScreen extends React.Component {
                   }}
                 </Query>
               </ScrollView>
-              <Subtitle>Popular Courses</Subtitle>
-              <CoursesContainer>
-                {courses.map((course, index) => (
-                  <Course
-                    key={index}
-                    image={course.image}
-                    title={course.title}
-                    subtitle={course.subtitle}
-                    logo={course.logo}
-                    author={course.author}
-                    avatar={course.avatar}
-                    caption={course.caption}
-                  />
-                ))}
-              </CoursesContainer>
             </ScrollView>
           </SafeAreaView>
         </AnimatedContainer>
@@ -277,10 +263,8 @@ class HomeScreen extends React.Component {
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
 
-const CoursesContainer = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding-left: 10px;
+const HomeCardView = styled.View`
+  padding-top: 200;
 `;
 
 const Message = styled.Text`
@@ -321,11 +305,16 @@ const Title = styled.Text`
   font-size: 16px;
   color: #b8bece;
   font-weight: 500;
+  top: 140;
+  left: -50px;
 `;
 const Name = styled.Text`
-  font-size: 20px;
+  font-size: 24px;
   color: #3c4560;
   font-weight: bold;
+  top: 80;
+  left: -50px;
+  width: 400px;
 `;
 
 const TitleBar = styled.View`
@@ -346,76 +335,5 @@ const logos = [
   {
     image: require("../assets/logo-use.png"),
     text: "Carte"
-  }
-];
-
-const cards = [
-  {
-    title: "React Native for Designers",
-    image: require("../assets/background11.jpg"),
-    subtitle: "React Native",
-    caption: "1 of 12 sections",
-    logo: require("../assets/logo-react.png")
-  },
-  {
-    title: "Styled Components",
-    image: require("../assets/background12.jpg"),
-    subtitle: "React Native",
-    caption: "2 of 12 sections",
-    logo: require("../assets/logo-react.png")
-  },
-  {
-    title: "Props and Icons",
-    image: require("../assets/background13.jpg"),
-    subtitle: "React Native",
-    caption: "3 of 12 sections",
-    logo: require("../assets/logo-react.png")
-  },
-  {
-    title: "Static Data and Loop",
-    image: require("../assets/background14.jpg"),
-    subtitle: "React Native",
-    caption: "4 of 12 sections",
-    logo: require("../assets/logo-react.png")
-  }
-];
-
-const courses = [
-  {
-    title: "Prototype in InVision Studio",
-    subtitle: "10 sections",
-    image: require("../assets/background13.jpg"),
-    logo: require("../assets/logo-studio.png"),
-    author: "Meng To",
-    avatar: require("../assets/avatar.jpg"),
-    caption: "Design and interactive prototype"
-  },
-  {
-    title: "React for Designers",
-    subtitle: "12 sections",
-    image: require("../assets/background11.jpg"),
-    logo: require("../assets/logo-react.png"),
-    author: "Meng To",
-    avatar: require("../assets/avatar.jpg"),
-    caption: "Learn to design and code a React site"
-  },
-  {
-    title: "Design and Code with Framer X",
-    subtitle: "10 sections",
-    image: require("../assets/background14.jpg"),
-    logo: require("../assets/logo-framerx.png"),
-    author: "Meng To",
-    avatar: require("../assets/avatar.jpg"),
-    caption: "Create powerful design and code components for your app"
-  },
-  {
-    title: "Design System in Figma",
-    subtitle: "10 sections",
-    image: require("../assets/background6.jpg"),
-    logo: require("../assets/logo-figma.png"),
-    author: "Meng To",
-    avatar: require("../assets/avatar.jpg"),
-    caption:
-      "Complete guide to designing a site using a collaborative design tool"
   }
 ];

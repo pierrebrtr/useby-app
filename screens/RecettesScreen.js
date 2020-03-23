@@ -1,13 +1,41 @@
 import React from "react";
 import styled from "styled-components";
-import { Button } from "react-native";
+import {
+  Button,
+  SafeAreaView,
+  TouchableOpacity,
+  Easing,
+  StatusBar
+} from "react-native";
 import Recette from "../components/Recette";
 import { PanResponder, Animated } from "react-native";
 import { connect } from "react-redux";
+import Menu from "../components/Menu";
+import Avatar from "../components/Avatar";
+import ModalLogin from "../components/ModalLogin";
+import NotificationButton from "../components/NotificationButton";
+import Notifications from "../components/Notifications";
 
 function mapStateToProps(state) {
   return {
     action: state.action
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    openMenu: () =>
+      dispatch({
+        type: "OPEN_MENU"
+      }),
+    openLogin: () =>
+      dispatch({
+        type: "OPEN_LOGIN"
+      }),
+    openNotif: () =>
+      dispatch({
+        type: "OPEN_NOTIF"
+      })
   };
 }
 
@@ -31,7 +59,48 @@ class RecettesScreen extends React.Component {
     thirdScale: new Animated.Value(0.8),
     thirdTranslateY: new Animated.Value(-50),
     index: 0,
-    opacity: new Animated.Value(0)
+    opacity: new Animated.Value(0),
+    scaleb: new Animated.Value(1),
+    opacityb: new Animated.Value(1)
+  };
+
+  componentDidUpdate() {
+    this.toggleMenu();
+  }
+  toggleMenu = () => {
+    if (this.props.action == "openMenu") {
+      Animated.parallel([
+        Animated.timing(this.state.scaleb, {
+          toValue: 0.9,
+          duration: 300,
+          easing: Easing.in()
+        }),
+        Animated.timing(this.state.opacityb, {
+          toValue: 0.5,
+          duration: 300
+        })
+      ]).start();
+
+      StatusBar.setBarStyle("light-content", true);
+    }
+
+    if (this.props.action == "closeMenu") {
+      Animated.parallel([
+        Animated.timing(this.state.scaleb, {
+          toValue: 1,
+          duration: 300
+        }),
+        Animated.timing(this.state.opacityb, {
+          toValue: 1,
+          duration: 300
+        })
+      ]).start();
+
+      StatusBar.setBarStyle("dark-content", true);
+      if (Platform.OS == "android") {
+        StatusBar.setBarStyle("light-content", true);
+      }
+    }
   };
 
   componentWillMount() {
@@ -115,80 +184,136 @@ class RecettesScreen extends React.Component {
     });
   }
 
+  handleAvatar = () => {
+    if (this.props.name !== "Inconnu") {
+      this.props.openMenu();
+    } else {
+      this.props.openLogin();
+    }
+  };
+
+  handlePress = index => {
+    switch (index) {
+      case 0:
+        this.props.navigation.dispatch(
+          SwitchActions.jumpTo({ routeName: "FridgeStack" })
+        );
+        break;
+      case 1:
+        this.props.navigation.dispatch(
+          SwitchActions.jumpTo({ routeName: "RecettesStack" })
+        );
+        break;
+      default:
+        break;
+    }
+  };
+
   render() {
     console.disableYellowBox = true;
     return (
-      <Container>
+      <RootView>
+        <Menu />
+        <Notifications />
+        <AnimatedContainer
+          style={{
+            transform: [{ scale: this.state.scaleb }],
+            opacity: this.state.opacityb
+          }}
+        >
+          <SafeAreaView>
+            <TitleBar>
+              <TouchableOpacity
+                onPress={this.handleAvatar}
+                style={{ position: "absolute", top: 0, left: 20 }}
+              >
+                <Avatar />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => this.props.openNotif()}
+                style={{ position: "absolute", right: 20, top: 5 }}
+              >
+                <NotificationButton />
+              </TouchableOpacity>
+            </TitleBar>
+          </SafeAreaView>
+        </AnimatedContainer>
         <AnimatedMask style={{ opacity: this.state.opacity }} />
-        <Animated.View
-          style={{
-            transform: [
-              { translateX: this.state.pan.x },
-              { translateY: this.state.pan.y }
-            ]
-          }}
-          {...this._panResponder.panHandlers}
-        >
-          <Recette
-            title={projects[this.state.index].title}
-            image={projects[this.state.index].image}
-            author={projects[this.state.index].author}
-            text={projects[this.state.index].text}
-            canOpen={true}
-          />
-        </Animated.View>
-        <Animated.View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: -1,
-            width: "100%",
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            transform: [
-              { scale: this.state.scale },
-              { translateY: this.state.translateY }
-            ]
-          }}
-        >
-          <Recette
-            title={projects[getNextIndex(this.state.index)].title}
-            image={projects[getNextIndex(this.state.index)].image}
-            author={projects[getNextIndex(this.state.index)].author}
-            text={projects[getNextIndex(this.state.index)].text}
-          />
-        </Animated.View>
-        <Animated.View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: -3,
-            width: "100%",
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            transform: [
-              { scale: this.state.thirdScale },
-              { translateY: this.state.thirdTranslateY }
-            ]
-          }}
-        >
-          <Recette
-            title={projects[getNextIndex(this.state.index + 1)].title}
-            image={projects[getNextIndex(this.state.index + 1)].image}
-            author={projects[getNextIndex(this.state.index + 1)].author}
-            text={projects[getNextIndex(this.state.index + 1)].text}
-          />
-        </Animated.View>
-      </Container>
+        <MainView>
+          <Container>
+            <Animated.View
+              style={{
+                transform: [
+                  { translateX: this.state.pan.x },
+                  { translateY: this.state.pan.y }
+                ]
+              }}
+              {...this._panResponder.panHandlers}
+            >
+              <Recette
+                title={projects[this.state.index].title}
+                image={projects[this.state.index].image}
+                author={projects[this.state.index].author}
+                text={projects[this.state.index].text}
+                canOpen={true}
+              />
+            </Animated.View>
+            <Animated.View
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                zIndex: -1,
+                width: "100%",
+                height: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                transform: [
+                  { scale: this.state.scale },
+                  { translateY: this.state.translateY }
+                ]
+              }}
+            >
+              <Recette
+                title={projects[getNextIndex(this.state.index)].title}
+                image={projects[getNextIndex(this.state.index)].image}
+                author={projects[getNextIndex(this.state.index)].author}
+                text={projects[getNextIndex(this.state.index)].text}
+              />
+            </Animated.View>
+            <Animated.View
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                zIndex: -3,
+                width: "100%",
+                height: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                transform: [
+                  { scale: this.state.thirdScale },
+                  { translateY: this.state.thirdTranslateY }
+                ]
+              }}
+            >
+              <Recette
+                title={projects[getNextIndex(this.state.index + 1)].title}
+                image={projects[getNextIndex(this.state.index + 1)].image}
+                author={projects[getNextIndex(this.state.index + 1)].author}
+                text={projects[getNextIndex(this.state.index + 1)].text}
+              />
+            </Animated.View>
+          </Container>
+        </MainView>
+        <ModalLogin />
+      </RootView>
     );
   }
 }
 
-export default connect(mapStateToProps)(RecettesScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RecettesScreen);
 
 const Mask = styled.View`
   position: absolute;
@@ -197,19 +322,53 @@ const Mask = styled.View`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.25);
-  z-index: -3;
+  z-index: -10;
 `;
 
 const AnimatedMask = Animated.createAnimatedComponent(Mask);
 
 const Container = styled.View`
   flex: 1;
+
   justify-content: center;
   align-items: center;
-  background-color: #f0f3f5;
 `;
 
-const Text = styled.Text``;
+const MainView = styled.View`
+  top: 0px;
+  width: 100%;
+  height: 80%;
+  position: absolute;
+  left: 0;
+  top: 10%;
+  z-index: 0;
+`;
+
+const RootViewb = styled.View`
+  flex: 1;
+`;
+
+const RootView = styled.View`
+  background: black;
+
+  flex: 1;
+`;
+
+const Containerb = styled.View`
+  flex: 1;
+  background-color: #f0f3f5;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+`;
+
+const AnimatedContainer = Animated.createAnimatedComponent(Containerb);
+
+const TitleBar = styled.View`
+  width: 100%;
+  height: 100px;
+  margin-top: 50px;
+  padding-left: 80px;
+`;
 
 const projects = [
   {

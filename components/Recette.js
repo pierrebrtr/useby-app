@@ -14,7 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
-const tabBarHeight = 49;
+const tabBarHeight = 0;
 
 function mapStateToProps(state) {
   return {
@@ -102,7 +102,7 @@ class Recette extends React.Component {
             }}
           />
           <TouchableOpacity
-            style={{ position: "absolute", top: 20, right: 20 }}
+            style={{ position: "absolute", top: 240, right: 20 }}
             onPress={this.closeCard}
           >
             <AnimatedCloseView style={{ opacity: this.state.opacity }}>

@@ -41,7 +41,7 @@ const screenHeight = Dimensions.get("window").height;
 
 class Menu extends React.Component {
   state = {
-    top: new Animated.Value(screenHeight),
+    top: new Animated.Value(screenHeight + 100),
     pan: new Animated.ValueXY()
   };
 
@@ -67,7 +67,7 @@ class Menu extends React.Component {
   toggleMenu = () => {
     if (this.props.action == "openMenu") {
       Animated.spring(this.state.top, {
-        toValue: 54
+        toValue: 100
       }).start();
     }
     if (this.props.action == "closeMenu") {

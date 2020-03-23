@@ -89,11 +89,27 @@ FridgeStack.navigationOptions = {
   )
 };
 
-const TabNavigator = createBottomTabNavigator({
-  HomeStack,
-  CoursesStack,
-  FridgeStack,
-  RecettesStack
-});
+const TabNavigator = createBottomTabNavigator(
+  {
+    HomeStack,
+    CoursesStack,
+    FridgeStack,
+    RecettesStack
+  },
+  {
+    tabBarOptions: {
+      showLabel: false,
+      style: {
+        position: "absolute",
+        left: "10%",
+        bottom: 10,
+        width: "90%",
+        borderRadius: 20,
+        elevation: 10,
+        borderTopWidth: 0
+      }
+    }
+  }
+);
 
 export default TabNavigator;

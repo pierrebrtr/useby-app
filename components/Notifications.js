@@ -215,13 +215,13 @@ const Text = styled.Text`
 
 const items = [
   {
-    logo: require("../assets/logo-use.png"),
+    logo: require("../assets/tomato.png"),
     title: "Tomates périmées",
     text: "Attention à vos tomates",
     date: "23 Jan"
   },
   {
-    logo: require("../assets/logo-use.png"),
+    logo: require("../assets/egg.png"),
     title: "Surplus d'oeufs",
     text: "Pensez à manger vos oeufs",
     date: "27 Nov"

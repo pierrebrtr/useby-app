@@ -17,6 +17,11 @@ import NotificationButton from "../components/NotificationButton";
 import Notifications from "../components/Notifications";
 import { SwitchActions } from "react-navigation";
 import LottieView from "lottie-react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Dimensions } from "react-native";
+
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 function mapStateToProps(state) {
   return { action: state.action, name: state.name };
@@ -161,19 +166,35 @@ class FridgeScreen extends React.Component {
             </TitleBar>
           </SafeAreaView>
         </AnimatedContainer>
-        <EmptyView>
-          <ChildView>
-            <LottieView
-              source={require("../assets/lottie-loading-text.json")}
-              autoPlay={true}
-              loop={true}
-              ref={animation => {
-                this.animation = animation;
-              }}
-            />
-            <Text>Ton frigo est vide</Text>
-          </ChildView>
-        </EmptyView>
+        <MainView>
+          <EmptyView>
+            <ChildView>
+              <LottieView
+                source={require("../assets/lottie-loading-text.json")}
+                autoPlay={true}
+                loop={true}
+                ref={animation => {
+                  this.animation = animation;
+                }}
+              />
+              <Text>Ton frigo est vide</Text>
+            </ChildView>
+          </EmptyView>
+          <FridgeView></FridgeView>
+          <TouchableOpacity
+            onPress={this.props.closeNotif}
+            style={{
+              position: "absolute",
+              top: screenHeight - 200,
+              left: screenWidth / 2 - 35,
+              zIndex: 100
+            }}
+          >
+            <CloseButton style={{ elevation: 10 }}>
+              <Ionicons name="ios-add" size={44} color="#546bfb" />
+            </CloseButton>
+          </TouchableOpacity>
+        </MainView>
         <ModalLogin />
       </RootView>
     );
@@ -181,6 +202,28 @@ class FridgeScreen extends React.Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FridgeScreen);
+
+const MainView = styled.View`
+  z-index: 0;
+  top: 100px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CloseButton = styled.View`
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+`;
 
 const RootView = styled.View`
   background: black;
@@ -206,7 +249,6 @@ const TitleBar = styled.View`
 
 const EmptyView = styled.View`
   z-index: 0;
-  top: 100px;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -231,3 +273,5 @@ const Text = styled.Text`
   font-weight: 600;
   text-transform: uppercase;
 `;
+
+const FridgeView = styled.View``;

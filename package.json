@@ -11,6 +11,7 @@
     "@react-native-community/masked-view": "^0.1.7",
     "apollo-boost": "^0.4.7",
     "expo": "~36.0.0",
+    "expo-av": "~8.0.0",
     "expo-blur": "~8.0.0",
     "expo-linear-gradient": "~8.0.0",
     "firebase": "^7.12.0",
@@ -21,6 +22,7 @@
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
     "react-native-gesture-handler": "^1.6.0",
+    "react-native-progress-circle": "^2.1.0",
     "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-safe-modules": "^1.0.0",
@@ -34,8 +36,7 @@
     "react-navigation-tabs": "^2.8.6",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "styled-components": "^5.0.1",
-    "expo-av": "~8.0.0"
+    "styled-components": "^5.0.1"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.0.0",

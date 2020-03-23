@@ -22,6 +22,7 @@ import ModalLogin from "../components/ModalLogin";
 import NotificationButton from "../components/NotificationButton";
 import Notifications from "../components/Notifications";
 import { SwitchActions } from "react-navigation";
+import HomeCard from "../components/HomeCard";
 
 const CardsQuery = gql`
   {
@@ -210,6 +211,10 @@ class HomeScreen extends React.Component {
                   </TouchableOpacity>
                 ))}
               </ScrollView>
+              <Subtitle>Infos</Subtitle>
+
+              <HomeCard navigation={this.props.navigation} />
+
               <Subtitle>Continue learning</Subtitle>
               <ScrollView
                 horizontal={true}

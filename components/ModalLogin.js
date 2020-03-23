@@ -49,7 +49,7 @@ class ModalLogin extends React.Component {
     iconPassword: require("../assets/icon-password.png"),
     isSuccessful: false,
     isLoading: false,
-    top: new Animated.Value(screenHeight),
+    top: new Animated.Value(screenHeight + 100),
     scale: new Animated.Value(1.3),
     translateY: new Animated.Value(0)
   };
@@ -66,7 +66,7 @@ class ModalLogin extends React.Component {
     if (this.props.action === "closeLogin") {
       setTimeout(() => {
         Animated.timing(this.state.top, {
-          toValue: screenHeight,
+          toValue: screenHeight + 100,
           duration: 0
         }).start();
         Animated.spring(this.state.scale, { toValue: 1.3 }).start();

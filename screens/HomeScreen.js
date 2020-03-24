@@ -71,6 +71,10 @@ function mapDispatchToProps(dispatch) {
       dispatch({
         type: "OPEN_MENU"
       }),
+    closeMenu: () =>
+      dispatch({
+        type: "CLOSE_MENU"
+      }),
     openLogin: () =>
       dispatch({
         type: "OPEN_LOGIN"
@@ -159,6 +163,12 @@ class HomeScreen extends React.Component {
     }
   };
 
+  handleClick = () => {
+    if (this.props.action == "openMenu") {
+      this.props.closeMenu();
+    }
+  };
+
   handlePress = index => {
     switch (index) {
       case 0:
@@ -190,7 +200,7 @@ class HomeScreen extends React.Component {
             opacity: this.state.opacity
           }}
         >
-          <SafeAreaView>
+          <SafeAreaView onStartShouldSetResponder={() => this.handleClick()}>
             <ScrollView>
               <TitleBar>
                 <TouchableOpacity

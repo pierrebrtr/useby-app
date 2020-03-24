@@ -1,6 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { Animated, TouchableOpacity, Dimensions } from "react-native";
+import {
+  Animated,
+  TouchableOpacity,
+  Dimensions,
+  TouchableWithoutFeedback,
+  BackHandler
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MenuItem from "./MenuItem";
 import { connect } from "react-redux";
@@ -58,6 +64,7 @@ class Menu extends React.Component {
   componentDidMount() {
     this.toggleMenu();
     this.retrieveName();
+    this.useEffect();
   }
 
   componentDidUpdate() {
@@ -67,7 +74,7 @@ class Menu extends React.Component {
   toggleMenu = () => {
     if (this.props.action == "openMenu") {
       Animated.spring(this.state.top, {
-        toValue: 100
+        toValue: 200
       }).start();
     }
     if (this.props.action == "closeMenu") {
@@ -75,6 +82,19 @@ class Menu extends React.Component {
         toValue: screenHeight + 100
       }).start();
     }
+  };
+
+  useEffect = () => {
+    const backAction = () => {
+      console.log("back");
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
   };
 
   handleMenu = index => {
@@ -125,6 +145,10 @@ class Menu extends React.Component {
     });
   }
 
+  tapBackground = () => {
+    console.log("test");
+  };
+
   render() {
     return (
       <AnimatedContainer
@@ -137,11 +161,13 @@ class Menu extends React.Component {
         }}
       >
         <Cover {...this._panResponder.panHandlers}>
-          <Image source={require("../assets/background2.jpg")} />
-          <Title>{this.props.name}</Title>
-          <Subtitle>Test de compte</Subtitle>
+          <Rect />
+          <Image />
+          {/* <Title>{this.props.name}</Title> */}
+
+          {/* <Subtitle>Test de compte</Subtitle> */}
         </Cover>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={this.props.closeMenu}
           style={{
             position: "absolute",
@@ -154,8 +180,9 @@ class Menu extends React.Component {
           <CloseView>
             <Ionicons name="ios-close" size={44} color="#546bfb" />
           </CloseView>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Content>
+          <Title>Menu</Title>
           {items.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -181,9 +208,13 @@ const Image = styled.Image`
 `;
 
 const Title = styled.Text`
-  color: white;
+  color: #3c4560;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 40px;
   font-size: 24px;
   font-weight: bold;
+  text-transform: uppercase;
 `;
 
 const Subtitle = styled.Text`
@@ -216,16 +247,25 @@ const Container = styled.View`
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
 
 const Cover = styled.View`
-  height: 142px;
-  background: black;
+  height: 50px;
+
   justify-content: center;
   align-items: center;
+  background-color: #f0f3f5;
 `;
 
 const Content = styled.View`
   height: ${screenHeight};
   background-color: #f0f3f5;
+  margin-top: -20px;
   padding: 50px;
+`;
+
+const Rect = styled.View`
+  background-color: #5145ff;
+  width: 100px;
+  height: 5px;
+  border-radius: 20px;
 `;
 
 const items = [

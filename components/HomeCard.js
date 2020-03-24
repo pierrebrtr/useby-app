@@ -71,9 +71,10 @@ class HomeCard extends React.Component {
   render() {
     return (
       <Container style={{ width: this.state.cardWidth, elevation: 5 }}>
+        <Fridge source={require("../assets/fridge.png")} />
         {this.state.fontLoaded ? <Title>Mon frigo</Title> : null}
         <LinearGradient
-          colors={["#355C7D", "#C06C84"]}
+          colors={["#5145FF", "#3153FA"]}
           style={{ flex: 1, borderRadius: 30 }}
         >
           <ScrollView
@@ -92,7 +93,7 @@ class HomeCard extends React.Component {
                   <Image source={item.image} />
                 </ImageView>
 
-                <Text>Test</Text>
+                <Text>{item.text}</Text>
               </MiniView>
             ))}
           </ScrollView>
@@ -103,6 +104,14 @@ class HomeCard extends React.Component {
 }
 
 export default connect()(HomeCard);
+
+const Fridge = styled.Image`
+  width: 180px;
+  height: 180px;
+
+  top: -40;
+  left: 200;
+`;
 
 const MiniView = styled.View`
   width: 90px;
@@ -160,30 +169,18 @@ const Title = styled.Text`
 const items = [
   {
     image: require("../assets/banana-line.png"),
-    text: "Remplir mon frigo"
+    text: "2/5"
   },
   {
-    image: require("../assets/logo-use.png"),
-    text: "Recettes dispos"
+    image: require("../assets/turkey-line.png"),
+    text: "4/10"
   },
   {
-    image: require("../assets/logo-use.png"),
-    text: "Carte"
+    image: require("../assets/egg-line.png"),
+    text: "90%"
   },
   {
-    image: require("../assets/logo-use.png"),
-    text: "Carte"
-  },
-  {
-    image: require("../assets/logo-use.png"),
-    text: "Carte"
-  },
-  {
-    image: require("../assets/logo-use.png"),
-    text: "Carte"
-  },
-  {
-    image: require("../assets/logo-use.png"),
-    text: "Carte"
+    image: require("../assets/carrot-line.png"),
+    text: "1/20"
   }
 ];

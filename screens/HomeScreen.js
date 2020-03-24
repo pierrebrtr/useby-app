@@ -6,7 +6,8 @@ import {
   Animated,
   Easing,
   StatusBar,
-  Platform
+  Platform,
+  BackHandler
 } from "react-native";
 import styled from "styled-components";
 import Card from "../components/Card";
@@ -179,7 +180,7 @@ class HomeScreen extends React.Component {
   render() {
     console.disableYellowBox = true;
     return (
-      <RootView>
+      <RootView onPress={this.handleAvatar}>
         <Menu />
         <Notifications />
         <AnimatedContainer
@@ -284,7 +285,7 @@ class HomeScreen extends React.Component {
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
 
 const HomeCardView = styled.View`
-  padding-top: 150;
+  padding-top: 170;
 `;
 
 const Message = styled.Text`

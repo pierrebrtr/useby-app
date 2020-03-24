@@ -131,11 +131,11 @@ class Menu extends React.Component {
         const positionY = this.state.pan.y.__getValue();
 
         if (positionY > 200) {
+          this.props.closeMenu();
           Animated.spring(this.state.pan, {
             toValue: { x: 0, y: 0 },
             duration: 0
           }).start();
-          this.props.closeMenu();
         } else {
           Animated.spring(this.state.pan, {
             toValue: { x: 0, y: 0 }

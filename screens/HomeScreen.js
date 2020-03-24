@@ -90,7 +90,7 @@ class HomeScreen extends React.Component {
   state = {
     scale: new Animated.Value(1),
     opacity: new Animated.Value(1),
-    fontLoaded: false
+    assetsLoaded: false
   };
 
   componentDidUpdate() {
@@ -109,11 +109,10 @@ class HomeScreen extends React.Component {
     await Font.loadAsync({
       "open-sans-bold": require("../assets/fonts/OpenSans-Bold.ttf"),
       "galano-bold": require("../assets/fonts/Galano-Grotesque-Bold.ttf"),
-      "galano-light": require("../assets/fonts/Galano-Grotesque-Light.ttf"),
-      galano: require("../assets/fonts/Galano-Grotesque.ttf")
+      "galano-light": require("../assets/fonts/Galano-Grotesque-Light.ttf")
     });
 
-    this.setState({ fontLoaded: true });
+    this.setState({ assetsLoaded: true });
   }
 
   toggleMenu = () => {
@@ -178,6 +177,8 @@ class HomeScreen extends React.Component {
   };
 
   render() {
+    const { assetsLoaded } = this.state;
+
     console.disableYellowBox = true;
     return (
       <RootView onPress={this.handleAvatar}>
@@ -199,11 +200,11 @@ class HomeScreen extends React.Component {
                   <Avatar />
                 </TouchableOpacity>
 
-                {this.state.fontLoaded ? (
+                {this.state.assetsLoaded ? (
                   <Title>Qu'allons nous faire aujourd'hui ?</Title>
                 ) : null}
 
-                {this.state.fontLoaded ? (
+                {this.state.assetsLoaded ? (
                   <Name>Bonjour, {this.props.name}</Name>
                 ) : null}
 
@@ -215,9 +216,12 @@ class HomeScreen extends React.Component {
                   <NotificationButton />
                 </TouchableOpacity>
               </TitleBar>
-              <HomeCardView>
-                <HomeCard navigation={this.props.navigation} />
-              </HomeCardView>
+              {this.state.assetsLoaded ? (
+                <HomeCardView>
+                  <HomeCard navigation={this.props.navigation} />
+                </HomeCardView>
+              ) : null}
+
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
@@ -327,7 +331,7 @@ const Title = styled.Text`
   color: #b8bece;
   top: 140;
   left: -50px;
-  font-family: "galano";
+  font-family: "galano-light";
 `;
 const Name = styled.Text`
   font-family: "galano-bold";

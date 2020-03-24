@@ -24,6 +24,8 @@ import Notifications from "../components/Notifications";
 import { SwitchActions } from "react-navigation";
 import HomeCard from "../components/HomeCard";
 
+import * as Font from "expo-font";
+
 const CardsQuery = gql`
   {
     cardsCollection {
@@ -86,7 +88,8 @@ class HomeScreen extends React.Component {
 
   state = {
     scale: new Animated.Value(1),
-    opacity: new Animated.Value(1)
+    opacity: new Animated.Value(1),
+    fontLoaded: false
   };
 
   componentDidUpdate() {
@@ -99,6 +102,17 @@ class HomeScreen extends React.Component {
     if (Platform.OS == "android") {
       StatusBar.setBarStyle("light-content", true);
     }
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      "open-sans-bold": require("../assets/fonts/OpenSans-Bold.ttf"),
+      "galano-bold": require("../assets/fonts/Galano-Grotesque-Bold.ttf"),
+      "galano-light": require("../assets/fonts/Galano-Grotesque-Light.ttf"),
+      galano: require("../assets/fonts/Galano-Grotesque.ttf")
+    });
+
+    this.setState({ fontLoaded: true });
   }
 
   toggleMenu = () => {
@@ -183,8 +197,15 @@ class HomeScreen extends React.Component {
                 >
                   <Avatar />
                 </TouchableOpacity>
-                <Title>Qu'allons nous faire aujourd'hui ?</Title>
-                <Name>Bonjour, {this.props.name}</Name>
+
+                {this.state.fontLoaded ? (
+                  <Title>Qu'allons nous faire aujourd'hui ?</Title>
+                ) : null}
+
+                {this.state.fontLoaded ? (
+                  <Name>Bonjour, {this.props.name}</Name>
+                ) : null}
+
                 {/* <State>Etat : Presque vide</State> */}
                 <TouchableOpacity
                   onPress={() => this.props.openNotif()}
@@ -194,7 +215,6 @@ class HomeScreen extends React.Component {
                 </TouchableOpacity>
               </TitleBar>
               <HomeCardView>
-                <Subtitle>Infos</Subtitle>
                 <HomeCard navigation={this.props.navigation} />
               </HomeCardView>
               <ScrollView
@@ -264,7 +284,7 @@ class HomeScreen extends React.Component {
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
 
 const HomeCardView = styled.View`
-  padding-top: 200;
+  padding-top: 150;
 `;
 
 const Message = styled.Text`
@@ -304,15 +324,15 @@ const AnimatedContainer = Animated.createAnimatedComponent(Container);
 const Title = styled.Text`
   font-size: 16px;
   color: #b8bece;
-  font-weight: 500;
   top: 140;
   left: -50px;
+  font-family: "galano";
 `;
 const Name = styled.Text`
-  font-size: 24px;
+  font-family: "galano-bold";
+  font-size: 30px;
   color: #3c4560;
-  font-weight: bold;
-  top: 80;
+  top: 80px;
   left: -50px;
   width: 400px;
 `;

@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Dimensions } from "react-native";
+import { Dimensions, ScrollView } from "react-native";
 import { connect } from "react-redux";
-import ProgressCircle from "react-native-progress-circle";
+
+import * as Font from "expo-font";
+import { LinearGradient } from "expo-linear-gradient";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -19,7 +21,8 @@ function getCourseWidth(screenWidth) {
 
 class HomeCard extends React.Component {
   state = {
-    cardWidth: getCourseWidth(screenWidth)
+    cardWidth: getCourseWidth(screenWidth),
+    fontLoaded: false
   };
 
   //   useEffect = () => {
@@ -50,6 +53,15 @@ class HomeCard extends React.Component {
     Dimensions.addEventListener("change", this.adaptLayout);
   }
 
+  async componentDidMount() {
+    await Font.loadAsync({
+      "galano-bold": require("../assets/fonts/Galano-Grotesque-Bold.ttf"),
+      "galano-light": require("../assets/fonts/Galano-Grotesque-Light.ttf")
+    });
+
+    this.setState({ fontLoaded: true });
+  }
+
   adaptLayout = dimensions => {
     this.setState({
       cardWidth: getCourseWidth(dimensions.window.width)
@@ -59,77 +71,32 @@ class HomeCard extends React.Component {
   render() {
     return (
       <Container style={{ width: this.state.cardWidth, elevation: 5 }}>
-        <Title>Mon frigo</Title>
-        <Row>
-          <Item>
-            <Icon source={require("../assets/banana-line.png")} />
-            <TextContainer>
-              <Text>Bananes</Text>
-              <SubText>Infos supplémentaires</SubText>
-            </TextContainer>
-            <CView>
-              <ProgressCircle
-                percent={70}
-                radius={30}
-                borderWidth={4}
-                color="#3399FF"
-                shadowColor="#ecf0f1"
-                bgColor="#fff"
-              >
-                <Text style={{ fontSize: 18, color: "#3399FF" }}>{"70%"}</Text>
-              </ProgressCircle>
-            </CView>
-          </Item>
-          <Item>
-            {/* <LView>
-              <LottieView
-                source={require("../assets/lottie-milk2.json")}
-                autoPlay={true}
-                loop={true}
-                style={{ position: "absolute" }}
-                ref={animation2 => {
-                  this.animation2 = animation2;
-                }}
-              />
-            </LView> */}
-            <Icon source={require("../assets/egg.png")} />
-            <TextContainer>
-              <Text>Oeufs</Text>
-              <SubText>Infos supplémentaires</SubText>
-            </TextContainer>
-            <CView>
-              <ProgressCircle
-                percent={30}
-                radius={30}
-                borderWidth={4}
-                color="#3399FF"
-                shadowColor="#ecf0f1"
-                bgColor="#fff"
-              >
-                <Text style={{ fontSize: 18, color: "#3399FF" }}>{"30%"}</Text>
-              </ProgressCircle>
-            </CView>
-          </Item>
-          <Item>
-            <Icon source={require("../assets/cheese-line.png")} />
-            <TextContainer>
-              <Text>Fromage</Text>
-              <SubText>Infos supplémentaires</SubText>
-            </TextContainer>
-            <CView>
-              <ProgressCircle
-                percent={5}
-                radius={30}
-                borderWidth={4}
-                color="#3399FF"
-                shadowColor="#ecf0f1"
-                bgColor="#fff"
-              >
-                <Text style={{ fontSize: 18, color: "#3399FF" }}>{"5%"}</Text>
-              </ProgressCircle>
-            </CView>
-          </Item>
-        </Row>
+        {this.state.fontLoaded ? <Title>Mon frigo</Title> : null}
+        <LinearGradient
+          colors={["#355C7D", "#C06C84"]}
+          style={{ flex: 1, borderRadius: 30 }}
+        >
+          <ScrollView
+            horizontal={true}
+            style={{
+              paddingBottom: 30,
+              position: "absolute",
+              bottom: 10,
+              paddingLeft: 10
+            }}
+            showsHorizontalScrollIndicator={false}
+          >
+            {items.map((item, index) => (
+              <MiniView>
+                <ImageView>
+                  <Image source={item.image} />
+                </ImageView>
+
+                <Text>Test</Text>
+              </MiniView>
+            ))}
+          </ScrollView>
+        </LinearGradient>
       </Container>
     );
   }
@@ -137,65 +104,86 @@ class HomeCard extends React.Component {
 
 export default connect()(HomeCard);
 
-const CView = styled.View`
-  width: 100px;
-  position: absolute;
-  top: -10;
-  left: 270;
-  height: 100px;
+const MiniView = styled.View`
+  width: 90px;
+  height: 120px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 45px;
+  margin-left: 20px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ImageView = styled.View`
+  width: 60px;
+  height: 60px;
+  background-color: white;
+  border-radius: 60px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Image = styled.Image`
+  width: 30px;
+  height: 30px;
+`;
+
+const Text = styled.Text`
+  color: white;
+  padding-top: 10px;
+  font-family: "galano-bold";
 `;
 
 const Container = styled.View`
   width: 335px;
   height: 335px;
-  background: white;
+  background-color: #5145ff;
   margin: 10px 20px;
-  border-radius: 14px;
+  border-radius: 30px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   margin-bottom: 20px;
 `;
 
 const Title = styled.Text`
-  color: #2c3e50;
-  font-size: 24px;
-  font-weight: bold;
-  top: 20px;
-  left: 20px;
+  color: white;
+  font-size: 35px;
+  top: 40px;
+  left: 40px;
   position: absolute;
-  text-transform: uppercase;
   z-index: 10;
-`;
-
-const Row = styled.View`
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  position: absolute;
-  top: 100px;
-  left: 20px;
-`;
-
-const Item = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 30px;
-`;
-
-const Text = styled.Text`
   text-transform: uppercase;
-  font-size: 15px;
-  font-weight: bold;
+  width: 130px;
+  text-align: left;
+  font-family: "galano-bold";
 `;
 
-const TextContainer = styled.View`
-  margin-left: 20px;
-`;
-
-const SubText = styled.Text`
-  color: #b8bece;
-`;
-
-const Icon = styled.Image`
-  width: 44px;
-  height: 44px;
-`;
+const items = [
+  {
+    image: require("../assets/banana-line.png"),
+    text: "Remplir mon frigo"
+  },
+  {
+    image: require("../assets/logo-use.png"),
+    text: "Recettes dispos"
+  },
+  {
+    image: require("../assets/logo-use.png"),
+    text: "Carte"
+  },
+  {
+    image: require("../assets/logo-use.png"),
+    text: "Carte"
+  },
+  {
+    image: require("../assets/logo-use.png"),
+    text: "Carte"
+  },
+  {
+    image: require("../assets/logo-use.png"),
+    text: "Carte"
+  },
+  {
+    image: require("../assets/logo-use.png"),
+    text: "Carte"
+  }
+];

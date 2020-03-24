@@ -66,4 +66,6 @@ const Image = styled.Image`
   width: 44px;
   height: 44px;
   border-radius: 22px;
+  border-width: 3px;
+  border-color: #4775f2;
 `;

@@ -159,8 +159,9 @@ class Menu extends React.Component {
             { translateY: this.state.pan.y }
           ]
         }}
+        {...this._panResponder.panHandlers}
       >
-        <Cover {...this._panResponder.panHandlers}>
+        <Cover>
           <Rect />
           <Image />
           {/* <Title>{this.props.name}</Title> */}

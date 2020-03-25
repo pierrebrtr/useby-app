@@ -15,7 +15,6 @@ export default function App() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-
     const datab = String(data);
     console.log(
       "https://world.openfoodfacts.org/api/v0/product/" + datab + ".json"
@@ -39,6 +38,8 @@ export default function App() {
     <View
       style={{
         flex: 1,
+        height: "100%",
+        width: "100%",
         flexDirection: "column",
         justifyContent: "flex-end"
       }}

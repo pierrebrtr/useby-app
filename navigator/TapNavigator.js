@@ -15,6 +15,7 @@ import FridgeScreen from "../screens/FridgeScreen";
 import MapScreen from "../screens/MapScreen";
 import BarCodeScreen from "../screens/BarCodeScreen";
 import ModalLoginBis from "../components/ModalLoginBis";
+import InventoryScreen from "../screens/InventoryScreen";
 
 const activeColor = "#4775f2";
 const inactiveColor = "#b8bece";
@@ -81,20 +82,50 @@ RecettesStack.navigationOptions = {
   )
 };
 
+// const FridgeStack = createStackNavigator(
+//   {
+//     Fridges: InventoryScreen,
+//     Barcode: BarCodeScreen
+//   },
+//   {
+//     mode: "modal"
+//   },
+// );
+
 const FridgeStack = createStackNavigator({
-  Fridges: FridgeScreen,
-  Barcode: BarCodeScreen
+  Fridges: {
+    screen: InventoryScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Barcode: {
+    screen: BarCodeScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
 });
 
-FridgeStack.navigationOptions = {
-  tabBarLabel: "Mon Frigo",
-  tabBarIcon: ({ focused }) => (
-    <MaterialCommunityIcons
-      name="fridge"
-      size={26}
-      color={focused ? activeColor : inactiveColor}
-    />
-  )
+FridgeStack.navigationOptions = ({ navigation }) => {
+  var tabBarVisible = true;
+  const routeName = navigation.state.routes[navigation.state.index].routeName;
+
+  if (routeName == "Barcode") {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel: "Mon Frigo",
+    tabBarIcon: ({ focused }) => (
+      <MaterialCommunityIcons
+        name="fridge"
+        size={26}
+        color={focused ? activeColor : inactiveColor}
+      />
+    )
+  };
 };
 
 const MapStack = createStackNavigator({
@@ -113,7 +144,12 @@ MapStack.navigationOptions = {
 };
 
 const AppStack = createStackNavigator({
-  Auth: ModalLoginBis
+  Auth: {
+    screen: ModalLoginBis,
+    navigationOptions: {
+      header: null
+    }
+  }
 });
 
 AppStack.navigationOptions = {

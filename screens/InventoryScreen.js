@@ -1,25 +1,10 @@
-//This is an example of React Native Tab
 import React from "react";
-//import react in our code.
 
-//For React Navigation 3+
-//import {
-//  createStackNavigator,
-//  createMaterialTopTabNavigator,
-//  createAppContainer,
-//} from 'react-navigation';
-
-//For React Navigation 4+
-import { createAppContainer } from "react-navigation";
+import { createAppContainer, NavigationContainer } from "react-navigation";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import FridgeScreen from "./FridgeScreen";
-import HomeScreen from "./HomeScreen";
 import PlacardScreen from "./PlacardScreen";
-
-//Making TabNavigator which will be called in App StackNavigator
-//we can directly export the TabNavigator also but header will not be visible
-//as header comes only when we put anything into StackNavigator and then export
 
 const TabScreen = createMaterialTopTabNavigator(
   {
@@ -36,7 +21,7 @@ const TabScreen = createMaterialTopTabNavigator(
         backgroundColor: "transparent",
         position: "absolute",
         left: "5%",
-        top: 150,
+        top: 40,
         width: "90%"
       },
       labelStyle: {
@@ -66,4 +51,5 @@ const InventoryScreen = createStackNavigator({
     }
   }
 });
+
 export default createAppContainer(InventoryScreen);

@@ -111,7 +111,7 @@ MapStack.navigationOptions = {
 };
 
 const AppStack = createStackNavigator({
-  Maps: ModalLoginBis
+  Auth: ModalLoginBis
 });
 
 AppStack.navigationOptions = {

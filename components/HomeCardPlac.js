@@ -19,7 +19,7 @@ function getCourseWidth(screenWidth) {
   return cardWidth;
 }
 
-class HomeCard extends React.Component {
+class HomeCardPlac extends React.Component {
   state = {
     cardWidth: getCourseWidth(screenWidth),
     fontLoaded: false
@@ -71,10 +71,10 @@ class HomeCard extends React.Component {
   render() {
     return (
       <Container style={{ width: this.state.cardWidth, elevation: 5 }}>
-        <Fridge source={require("../assets/fridge.png")} />
-        {this.state.fontLoaded ? <Title>Mon frigo</Title> : null}
+        <Plac source={require("../assets/placb.png")} />
+        {this.state.fontLoaded ? <Title>Mon placard</Title> : null}
         <LinearGradient
-          colors={["#5145FF", "#3153FA"]}
+          colors={["#e74c3c", "#e74c3c"]}
           style={{ flex: 1, borderRadius: 30 }}
         >
           <ScrollView
@@ -103,14 +103,14 @@ class HomeCard extends React.Component {
   }
 }
 
-export default connect()(HomeCard);
+export default connect()(HomeCardPlac);
 
-const Fridge = styled.Image`
-  width: 180px;
-  height: 180px;
+const Plac = styled.Image`
+  width: 140px;
+  height: 140px;
 
-  top: -40;
-  left: 200;
+  top: 0;
+  left: 30;
 `;
 
 const MiniView = styled.View`
@@ -146,7 +146,7 @@ const Text = styled.Text`
 const Container = styled.View`
   width: 335px;
   height: 335px;
-  background-color: #5145ff;
+  background-color: #e74c3c;
   margin: 10px 20px;
   border-radius: 30px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
@@ -157,12 +157,12 @@ const Title = styled.Text`
   color: white;
   font-size: 35px;
   top: 40px;
-  left: 40px;
+  left: 160px;
   position: absolute;
   z-index: 10;
   text-transform: uppercase;
-  width: 130px;
-  text-align: left;
+  width: 190px;
+  text-align: right;
   font-family: "galano-bold";
 `;
 

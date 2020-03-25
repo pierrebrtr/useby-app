@@ -24,9 +24,10 @@ import ModalLoginBis from "../components/ModalLoginBis";
 import NotificationButton from "../components/NotificationButton";
 import Notifications from "../components/Notifications";
 import { SwitchActions } from "react-navigation";
-import HomeCard from "../components/HomeCard";
+import HomeCardFridge from "../components/HomeCardFridge";
 
 import * as Font from "expo-font";
+import HomeCardPlac from "../components/HomeCardPlac";
 
 const CardsQuery = gql`
   {
@@ -229,7 +230,7 @@ class HomeScreen extends React.Component {
               </TitleBar>
               {this.state.assetsLoaded ? (
                 <HomeCardView>
-                  <HomeCard navigation={this.props.navigation} />
+                  <HomeCardFridge navigation={this.props.navigation} />
                 </HomeCardView>
               ) : null}
 
@@ -247,10 +248,19 @@ class HomeScreen extends React.Component {
                     onPress={() => this.handlePress(index)}
                     activeOpacity={0.6}
                   >
-                    <Logo key={index} image={logo.image} text={logo.text} />
+                    <ContainerLogo style={{ elevation: 5 }}>
+                      <ImageLogo source={logo.image} resizeMode="contain" />
+                      <TextLogo>{logo.text}</TextLogo>
+                    </ContainerLogo>
                   </TouchableOpacity>
                 ))}
               </ScrollView>
+
+              {this.state.assetsLoaded ? (
+                <HomeCardViewB>
+                  <HomeCardPlac navigation={this.props.navigation} />
+                </HomeCardViewB>
+              ) : null}
 
               <Subtitle>Continue learning</Subtitle>
               <ScrollView
@@ -299,8 +309,37 @@ class HomeScreen extends React.Component {
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
 
+const ContainerLogo = styled.View`
+  flex-direction: row;
+  background: white;
+  height: 60px;
+  padding: 12px 25px 12px;
+  border-radius: 30px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05);
+  align-items: center;
+  margin: 0 8px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+`;
+
+const ImageLogo = styled.Image`
+  width: 36px;
+  height: 36px;
+`;
+
+const TextLogo = styled.Text`
+  font-weight: 600;
+  font-size: 17px;
+  margin-left: 8px;
+  font-family: "galano-bold";
+`;
+
 const HomeCardView = styled.View`
   padding-top: 170;
+`;
+
+const HomeCardViewB = styled.View`
+  padding-top: 0;
 `;
 
 const Message = styled.Text`

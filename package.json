@@ -36,7 +36,8 @@
     "react-navigation-tabs": "^2.8.6",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "styled-components": "^5.0.1"
+    "styled-components": "^5.0.1",
+    "expo-app-auth": "~8.0.0"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.0.0",

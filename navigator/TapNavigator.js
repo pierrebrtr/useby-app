@@ -3,11 +3,17 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import HomeScreen from "../screens/HomeScreen";
 import SectionScreen from "../screens/SectionScreen";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  FontAwesome
+} from "@expo/vector-icons";
 import CoursesScreen from "../screens/CoursesScreen";
 import RecettesScreen from "../screens/RecettesScreen";
 import VideoScreen from "../screens/VideoScreen";
 import FridgeScreen from "../screens/FridgeScreen";
+import MapScreen from "../screens/MapScreen";
+import ModalLoginBis from "../components/ModalLoginBis";
 
 const activeColor = "#4775f2";
 const inactiveColor = "#b8bece";
@@ -89,12 +95,43 @@ FridgeStack.navigationOptions = {
   )
 };
 
+const MapStack = createStackNavigator({
+  Maps: MapScreen
+});
+
+MapStack.navigationOptions = {
+  tabBarLabel: "Carte",
+  tabBarIcon: ({ focused }) => (
+    <FontAwesome
+      name="map"
+      size={24}
+      color={focused ? activeColor : inactiveColor}
+    />
+  )
+};
+
+const AppStack = createStackNavigator({
+  Maps: ModalLoginBis
+});
+
+AppStack.navigationOptions = {
+  tabBarLabel: "Auth",
+  tabBarIcon: ({ focused }) => (
+    <FontAwesome
+      name="lock"
+      size={24}
+      color={focused ? activeColor : inactiveColor}
+    />
+  )
+};
+
 const TabNavigator = createBottomTabNavigator(
   {
     HomeStack,
-    CoursesStack,
     FridgeStack,
-    RecettesStack
+    RecettesStack,
+    MapStack,
+    AppStack
   },
   {
     tabBarOptions: {

@@ -20,6 +20,7 @@ import Avatar from "../components/Avatar";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import ModalLogin from "../components/ModalLogin";
+import ModalLoginBis from "../components/ModalLoginBis";
 import NotificationButton from "../components/NotificationButton";
 import Notifications from "../components/Notifications";
 import { SwitchActions } from "react-navigation";

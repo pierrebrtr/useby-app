@@ -12,6 +12,8 @@ import MenuItem from "./MenuItem";
 import { connect } from "react-redux";
 import { AsyncStorage, PanResponder } from "react-native";
 
+import * as Font from "expo-font";
+
 const screenWidth = Dimensions.get("window").width;
 
 const cardWidth = screenWidth;
@@ -48,7 +50,8 @@ const screenHeight = Dimensions.get("window").height;
 class Menu extends React.Component {
   state = {
     top: new Animated.Value(screenHeight + 100),
-    pan: new Animated.ValueXY()
+    pan: new Animated.ValueXY(),
+    assetsLoaded: false
   };
 
   retrieveName = async () => {
@@ -65,6 +68,14 @@ class Menu extends React.Component {
     this.toggleMenu();
     this.retrieveName();
     this.useEffect();
+  }
+  async componentDidMount() {
+    await Font.loadAsync({
+      "galano-bold": require("../assets/fonts/Galano-Grotesque-Bold.ttf"),
+      "galano-n": require("../assets/fonts/Galano-Grotesque.ttf")
+    });
+
+    this.setState({ assetsLoaded: true });
   }
 
   componentDidUpdate() {
@@ -150,6 +161,7 @@ class Menu extends React.Component {
   };
 
   render() {
+    const { assetsLoaded } = this.state;
     return (
       <AnimatedContainer
         style={{
@@ -183,7 +195,7 @@ class Menu extends React.Component {
           </CloseView>
         </TouchableOpacity> */}
         <Content>
-          <Title>Menu</Title>
+          {this.state.assetsLoaded ? <Title>Menu</Title> : null}
           {items.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -213,9 +225,8 @@ const Title = styled.Text`
   justify-content: center;
   text-align: center;
   padding-bottom: 40px;
-  font-size: 24px;
-  font-weight: bold;
-  text-transform: uppercase;
+  font-size: 30px;
+  font-family: "galano-bold";
 `;
 
 const Subtitle = styled.Text`
@@ -239,10 +250,11 @@ const Container = styled.View`
   background: white;
   width: ${cardWidth};
   align-self: center;
-  height: 1000%;
+  height: 10000px;
   z-index: 100;
   border-radius: 10px;
   overflow: hidden;
+  background-color: #f0f3f5;
 `;
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);

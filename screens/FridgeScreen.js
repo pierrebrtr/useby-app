@@ -182,7 +182,9 @@ class FridgeScreen extends React.Component {
           </EmptyView>
           <FridgeView></FridgeView>
           <TouchableOpacity
-            onPress={this.props.closeNotif}
+            onPress={() => {
+              this.props.navigation.push("Barcode");
+            }}
             style={{
               position: "absolute",
               top: screenHeight - 200,

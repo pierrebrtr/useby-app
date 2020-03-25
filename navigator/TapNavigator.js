@@ -13,6 +13,7 @@ import RecettesScreen from "../screens/RecettesScreen";
 import VideoScreen from "../screens/VideoScreen";
 import FridgeScreen from "../screens/FridgeScreen";
 import MapScreen from "../screens/MapScreen";
+import BarCodeScreen from "../screens/BarCodeScreen";
 import ModalLoginBis from "../components/ModalLoginBis";
 
 const activeColor = "#4775f2";
@@ -81,7 +82,8 @@ RecettesStack.navigationOptions = {
 };
 
 const FridgeStack = createStackNavigator({
-  Fridges: FridgeScreen
+  Fridges: FridgeScreen,
+  Barcode: BarCodeScreen
 });
 
 FridgeStack.navigationOptions = {

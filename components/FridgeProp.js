@@ -19,8 +19,8 @@ export default class FridgeProp extends React.Component {
         style={{ flex: 1, alignItems: "center", paddingVertical: 10 }}
       >
         <TouchableOpacity onPress={() => removeItem(key)}>
-          <Container style={{ elevation: 10 }}>
-            <Image source={{ uri }} resizeMode="contain" />
+          <Container style={{ elevation: 5 }}>
+            <Image source={{ uri }} />
             <Text>{title}</Text>
           </Container>
         </TouchableOpacity>
@@ -30,26 +30,27 @@ export default class FridgeProp extends React.Component {
 }
 
 const Container = styled.View`
-  flex-direction: row;
+  flex-direction: column;
   background: white;
-  height: 60px;
+  height: 100%;
   padding: 12px 16px 12px;
-  border-radius: 10px;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 50px;
   align-items: center;
-  margin: 0 8px;
-  margin-bottom: 15px;
-  margin-top: 15px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Image = styled.Image`
-  width: 36px;
-  height: 36px;
-  border-radius: 30px;
+  width: 70px;
+  height: 70px;
+  border-radius: 100px;
 `;
 
 const Text = styled.Text`
   font-weight: 600;
   font-size: 17px;
   margin-left: 8px;
+  width: 200px;
+  text-align: center;
 `;

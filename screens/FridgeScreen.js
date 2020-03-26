@@ -40,14 +40,7 @@ UIManager.setLayoutAnimationEnabledExperimental &&
 
 const imageUrl =
   "https://raw.githubusercontent.com/AboutReact/sampleresource/master/logosmalltransparen.png";
-const cards = [
-  {
-    key: 0,
-    uri: imageUrl,
-    title: "Animated FlatList Example Heading",
-    description: "Please visit www.aboutreact.com"
-  }
-];
+const cards = [];
 
 class FridgeScreen extends React.Component {
   static navigationOptions = {
@@ -59,7 +52,9 @@ class FridgeScreen extends React.Component {
     scale: new Animated.Value(1),
     opacity: new Animated.Value(1),
     cards,
-    p_name: "Default"
+    p_name: "Default",
+    p_photo: "https://cl.ly/55da82beb939/download/avatar-default.jpg",
+    show: true
   };
 
   useEffect = () => {
@@ -83,28 +78,12 @@ class FridgeScreen extends React.Component {
   componentWillReceiveProps(nextProps) {
     console.log("Param : " + nextProps.navigation.state.params.product);
     const p_name = nextProps.navigation.state.params.product;
-    this.setState({ p_name: p_name }, function() {
+    const p_photo = nextProps.navigation.state.params.photo;
+    this.setState({ p_name, p_photo }, function() {
       this.addItem();
+      this.HideComponent();
     });
   }
-
-  setAnimation = () => {
-    LayoutAnimation.configureNext({
-      duration: 250,
-      update: {
-        type: LayoutAnimation.Types.easeIn,
-        springDamping: 0.7
-      }
-    });
-    LayoutAnimation.configureNext({
-      duration: 500,
-      create: {
-        type: LayoutAnimation.Types.easeIn,
-        property: LayoutAnimation.Properties.scaleXY,
-        springDamping: 0.7
-      }
-    });
-  };
 
   addItem = (() => {
     let key = cards.length;
@@ -112,12 +91,12 @@ class FridgeScreen extends React.Component {
       const { cards } = this.state;
       cards.unshift({
         key,
-        uri: imageUrl,
+        uri: this.state.p_photo,
         title: this.state.p_name,
         description: "",
         animated: true
       });
-      this.setAnimation();
+
       this.setState({
         cards: cards.slice(0)
       });
@@ -131,7 +110,11 @@ class FridgeScreen extends React.Component {
 
   removeItem = key => {
     const { cards } = this.state;
-    this.setAnimation();
+    console.log("Cards length : " + cards.length);
+    if (cards.length == 1) {
+      this.ShowComponent();
+    }
+
     this.setState({
       cards: cards.slice().filter(card => card.key !== key)
     });
@@ -140,6 +123,14 @@ class FridgeScreen extends React.Component {
   renderItem = ({ item }) => (
     <FridgeProp item={item} removeItem={this.removeItem} />
   );
+
+  HideComponent = () => {
+    this.setState({ show: false });
+  };
+
+  ShowComponent = () => {
+    this.setState({ show: true });
+  };
 
   render() {
     console.disableYellowBox = true;
@@ -154,18 +145,25 @@ class FridgeScreen extends React.Component {
         <MainView>
           <EmptyView>
             <ChildView>
-              {/* <LottieView
-                source={require("../assets/lottie-loading-text.json")}
-                autoPlay={true}
-                loop={true}
-                ref={animation => {
-                  this.animation = animation;
-                }}
-              /> */}
-              <Text>Ton frigo est vide</Text>
+              {this.state.show ? (
+                <LottieView
+                  source={require("../assets/lottie-loading-text.json")}
+                  autoPlay={true}
+                  loop={true}
+                  ref={animation => {
+                    this.animation = animation;
+                  }}
+                />
+              ) : null}
+              {this.state.show ? <Text>Ton frigo est vide</Text> : null}
               <FlatList
                 data={this.state.cards}
                 renderItem={this.renderItem}
+                style={{
+                  position: "absolute",
+                  width: "85%",
+                  height: "65%"
+                }}
                 // ItemSeparatorComponent={() => <View />}
                 keyExtractor={item => item.key.toString()}
               />

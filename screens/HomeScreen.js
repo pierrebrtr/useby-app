@@ -29,6 +29,11 @@ import HomeCardFridge from "../components/HomeCardFridge";
 import * as Font from "expo-font";
 import HomeCardPlac from "../components/HomeCardPlac";
 
+import {
+  Appearance,
+  AppearanceProvider,
+  useColorScheme
+} from "react-native-appearance";
 import colors from "../styles/colors.js";
 
 const CardsQuery = gql`
@@ -88,6 +93,16 @@ function mapDispatchToProps(dispatch) {
         type: "OPEN_NOTIF"
       })
   };
+}
+
+function MyComponent() {
+  let colorScheme = Appearance.getColorScheme();
+
+  if (colorScheme === "dark") {
+    return "dark";
+  } else {
+    return "light";
+  }
 }
 
 class HomeScreen extends React.Component {
@@ -184,6 +199,9 @@ class HomeScreen extends React.Component {
         this.props.navigation.dispatch(
           SwitchActions.jumpTo({ routeName: "RecettesStack" })
         );
+        break;
+      case 2:
+        console.log("theme : " + MyComponent());
         break;
       default:
         break;

@@ -22,7 +22,9 @@
       "bundleIdentifier": "fr.pandf.useby"
     },
     "android": {
-      "package": "fr.pandf.useby"
-    }
+      "package": "fr.pandf.useby",
+      "userInterfaceStyle": "automatic"
+    },
+    "userInterfaceStyle": "automatic"
   }
 }

@@ -91,8 +91,7 @@ class FridgeScreen extends React.Component {
         key,
         uri: this.state.p_photo,
         title: this.state.p_name,
-        description: "",
-        animated: true
+        description: ""
       });
 
       this.setState({

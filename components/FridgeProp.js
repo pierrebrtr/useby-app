@@ -1,14 +1,6 @@
-/*Example to add or remove flatlist item with animation*/
 import React from "react";
 import styled from "styled-components";
-//Import React
-import {
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-  SafeAreaView
-} from "react-native";
-//Import basic react native components
+import { Animated, TouchableOpacity } from "react-native";
 
 export default class FridgeProp extends React.Component {
   render() {
@@ -18,7 +10,7 @@ export default class FridgeProp extends React.Component {
       <Animated.View
         style={{ flex: 1, alignItems: "center", paddingVertical: 10 }}
       >
-        <TouchableOpacity onPress={() => removeItem(key)}>
+        <TouchableOpacity onLongPress={() => removeItem(key)}>
           <Container style={{ elevation: 5 }}>
             <Image source={{ uri }} />
             <Text>{title}</Text>

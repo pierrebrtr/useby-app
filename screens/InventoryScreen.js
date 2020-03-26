@@ -25,13 +25,13 @@ const TabScreen = createMaterialTopTabNavigator(
         width: "90%"
       },
       labelStyle: {
-        textAlign: "center"
+        textAlign: "center",
+        fontFamily: "galano-bold"
       },
       indicatorStyle: {
-        marginLeft: "14.5%",
+        opacity: 0,
         borderBottomColor: "black",
-        borderBottomWidth: 2,
-        width: "10%"
+        borderBottomWidth: 2
       }
     }
   }

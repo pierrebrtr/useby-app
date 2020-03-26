@@ -18,7 +18,15 @@ import Notifications from "../components/Notifications";
 import { SwitchActions } from "react-navigation";
 import LottieView from "lottie-react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Dimensions } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  UIManager,
+  StyleSheet,
+  LayoutAnimation,
+  View
+} from "react-native";
+import FridgeProp from "../components/FridgeProp";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -27,22 +35,19 @@ function mapStateToProps(state) {
   return { action: state.action, name: state.name };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    openMenu: () =>
-      dispatch({
-        type: "OPEN_MENU"
-      }),
-    openLogin: () =>
-      dispatch({
-        type: "OPEN_LOGIN"
-      }),
-    openNotif: () =>
-      dispatch({
-        type: "OPEN_NOTIF"
-      })
-  };
-}
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+
+const imageUrl =
+  "https://raw.githubusercontent.com/AboutReact/sampleresource/master/logosmalltransparen.png";
+const cards = [
+  {
+    key: 0,
+    uri: imageUrl,
+    title: "Animated FlatList Example Heading",
+    description: "Please visit www.aboutreact.com"
+  }
+];
 
 class FridgeScreen extends React.Component {
   static navigationOptions = {
@@ -52,7 +57,9 @@ class FridgeScreen extends React.Component {
   state = {
     //Menu
     scale: new Animated.Value(1),
-    opacity: new Animated.Value(1)
+    opacity: new Animated.Value(1),
+    cards,
+    p_name: "Default"
   };
 
   useEffect = () => {
@@ -62,9 +69,7 @@ class FridgeScreen extends React.Component {
     return () => playAnimation.remove();
   };
 
-  componentDidUpdate() {
-    this.toggleMenu();
-  }
+  componentDidUpdate() {}
 
   componentDidMount() {
     this.useEffect();
@@ -74,6 +79,67 @@ class FridgeScreen extends React.Component {
       StatusBar.setBarStyle("light-content", true);
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("Param : " + nextProps.navigation.state.params.product);
+    const p_name = nextProps.navigation.state.params.product;
+    this.setState({ p_name: p_name }, function() {
+      this.addItem();
+    });
+  }
+
+  setAnimation = () => {
+    LayoutAnimation.configureNext({
+      duration: 250,
+      update: {
+        type: LayoutAnimation.Types.easeIn,
+        springDamping: 0.7
+      }
+    });
+    LayoutAnimation.configureNext({
+      duration: 500,
+      create: {
+        type: LayoutAnimation.Types.easeIn,
+        property: LayoutAnimation.Properties.scaleXY,
+        springDamping: 0.7
+      }
+    });
+  };
+
+  addItem = (() => {
+    let key = cards.length;
+    return () => {
+      const { cards } = this.state;
+      cards.unshift({
+        key,
+        uri: imageUrl,
+        title: this.state.p_name,
+        description: "",
+        animated: true
+      });
+      this.setAnimation();
+      this.setState({
+        cards: cards.slice(0)
+      });
+      key++;
+    };
+  })();
+
+  addItem(StringHolder) {
+    Alert.alert(StringHolder);
+  }
+
+  removeItem = key => {
+    const { cards } = this.state;
+    this.setAnimation();
+    this.setState({
+      cards: cards.slice().filter(card => card.key !== key)
+    });
+  };
+
+  renderItem = ({ item }) => (
+    <FridgeProp item={item} removeItem={this.removeItem} />
+  );
 
   render() {
     console.disableYellowBox = true;
@@ -88,15 +154,21 @@ class FridgeScreen extends React.Component {
         <MainView>
           <EmptyView>
             <ChildView>
-              <LottieView
+              {/* <LottieView
                 source={require("../assets/lottie-loading-text.json")}
                 autoPlay={true}
                 loop={true}
                 ref={animation => {
                   this.animation = animation;
                 }}
-              />
+              /> */}
               <Text>Ton frigo est vide</Text>
+              <FlatList
+                data={this.state.cards}
+                renderItem={this.renderItem}
+                // ItemSeparatorComponent={() => <View />}
+                keyExtractor={item => item.key.toString()}
+              />
             </ChildView>
           </EmptyView>
           <FridgeView></FridgeView>
@@ -104,6 +176,7 @@ class FridgeScreen extends React.Component {
             onPress={() => {
               this.props.navigation.push("Barcode");
             }}
+            // onPress={this.addItem}
             style={{
               position: "absolute",
               top: screenHeight - 200,
@@ -122,7 +195,7 @@ class FridgeScreen extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FridgeScreen);
+export default connect(mapStateToProps)(FridgeScreen);
 
 const MainView = styled.View`
   z-index: 0;

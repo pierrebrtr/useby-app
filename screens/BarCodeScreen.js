@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
-export default function App() {
+const BarCodeScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -23,7 +23,8 @@ export default function App() {
       .then(response => response.json())
       .then(response => {
         var name = response.product.product_name;
-        alert(name);
+        // alert(name);
+        navigation.navigate("Frigo", { product: name });
       });
   };
 
@@ -54,4 +55,6 @@ export default function App() {
       )}
     </View>
   );
-}
+};
+
+export default BarCodeScreen;

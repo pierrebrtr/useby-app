@@ -15,6 +15,7 @@ import Avatar from "../components/Avatar";
 import ModalLogin from "../components/ModalLogin";
 import NotificationButton from "../components/NotificationButton";
 import Notifications from "../components/Notifications";
+import colors from "../styles/colors.js";
 
 function mapStateToProps(state) {
   return {
@@ -356,7 +357,7 @@ const RootView = styled.View`
 
 const Containerb = styled.View`
   flex: 1;
-  background-color: #f0f3f5;
+  background-color: ${colors.main_bg};
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 `;

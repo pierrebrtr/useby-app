@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
+import colors from "../styles/colors.js";
 
 let screenWidth = Dimensions.get("window").width;
 var cardWith = screenWidth - 40;
@@ -130,7 +131,7 @@ const Container = styled.View`
   width: 100%;
   height: 100%;
   z-index: 100;
-  background: #f0f3f5;
+  background: ${colors.main_bg};
 `;
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
@@ -156,7 +157,7 @@ const Subtitle = styled.Text`
   font-size: 15;
   text-transform: uppercase;
   font-weight: 600;
-  color: #b8bece;
+  color: ${colors.main};
 `;
 
 const Item = styled.View`

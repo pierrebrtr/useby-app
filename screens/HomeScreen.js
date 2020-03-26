@@ -29,6 +29,8 @@ import HomeCardFridge from "../components/HomeCardFridge";
 import * as Font from "expo-font";
 import HomeCardPlac from "../components/HomeCardPlac";
 
+import colors from "../styles/colors.js";
+
 const CardsQuery = gql`
   {
     cardsCollection {
@@ -346,7 +348,7 @@ const HomeCardViewB = styled.View`
 
 const Message = styled.Text`
   margin: 20px;
-  color: #b8bece;
+  color: ${colors.main};
   font-size: 15px;
   font-weight: 500;
 `;
@@ -362,7 +364,7 @@ const RootView = styled.View`
 `;
 
 const Subtitle = styled.Text`
-  color: #b8bece;
+  color: ${colors.main};
   font-weight: 600;
   font-size: 15px;
   margin-left: 20px;
@@ -371,7 +373,7 @@ const Subtitle = styled.Text`
 
 const Container = styled.View`
   flex: 1;
-  background-color: #f0f3f5;
+  background-color: ${colors.main_bg};
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 `;
@@ -380,7 +382,7 @@ const AnimatedContainer = Animated.createAnimatedComponent(Container);
 
 const Title = styled.Text`
   font-size: 16px;
-  color: #b8bece;
+  color: ${colors.main};
   top: 140;
   left: -50px;
   font-family: "galano-light";

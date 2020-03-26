@@ -17,10 +17,6 @@ class MapScreen extends React.Component {
 
 export default MapScreen;
 
-const Container = styled.View`
-  background: #f0f3f5;
-`;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

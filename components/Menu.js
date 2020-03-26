@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import MenuItem from "./MenuItem";
 import { connect } from "react-redux";
 import { AsyncStorage, PanResponder } from "react-native";
-
+import colors from "../styles/colors.js";
 import * as Font from "expo-font";
 
 const screenWidth = Dimensions.get("window").width;
@@ -254,7 +254,7 @@ const Container = styled.View`
   z-index: 100;
   border-radius: 10px;
   overflow: hidden;
-  background-color: #f0f3f5;
+  background-color: ${colors.main_bg};
 `;
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
@@ -264,12 +264,12 @@ const Cover = styled.View`
 
   justify-content: center;
   align-items: center;
-  background-color: #f0f3f5;
+  background-color: ${colors.main_bg};
 `;
 
 const Content = styled.View`
   height: ${screenHeight};
-  background-color: #f0f3f5;
+  background-color: ${colors.main_bg};
   margin-top: -20px;
   padding: 50px;
 `;

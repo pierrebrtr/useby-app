@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import firebase from "./Firebase";
 import { AsyncStorage } from "react-native";
 import { saveState } from "./AsyncStorage";
+import colors from "../styles/colors.js";
 
 const screenHeight = Dimensions.get("window").height;
 
@@ -252,7 +253,7 @@ const Text = styled.Text`
   text-transform: uppercase;
   width: 160px;
   text-align: center;
-  color: #b8bece;
+  color: ${colors.main};
 `;
 
 const TextInput = styled.TextInput`

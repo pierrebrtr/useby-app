@@ -5,6 +5,7 @@ import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import FridgeScreen from "./FridgeScreen";
 import PlacardScreen from "./PlacardScreen";
+import colors from "../styles/colors";
 
 const TabScreen = createMaterialTopTabNavigator(
   {
@@ -16,7 +17,7 @@ const TabScreen = createMaterialTopTabNavigator(
     animationEnabled: true,
     tabBarOptions: {
       activeTintColor: "blue",
-      inactiveTintColor: "#b8bece",
+      inactiveTintColor: colors.main,
       style: {
         backgroundColor: "transparent",
         position: "absolute",

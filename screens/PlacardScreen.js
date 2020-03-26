@@ -19,6 +19,7 @@ import { SwitchActions } from "react-navigation";
 import LottieView from "lottie-react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
+import colors from "../styles/colors.js";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -133,7 +134,7 @@ const RootView = styled.View`
 
 const Container = styled.View`
   flex: 1;
-  background-color: #f0f3f5;
+  background-color: ${colors.main_bg};
 `;
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
@@ -166,7 +167,7 @@ const ChildView = styled.View`
 
 const Text = styled.Text`
   padding-top: 200px;
-  color: #b8bece;
+  color: ${colors.main};
   font-size: 24px;
   font-weight: 600;
   text-transform: uppercase;

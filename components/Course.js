@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Dimensions } from "react-native";
+import colors from "../styles/colors.js";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -124,7 +125,7 @@ const Caption = styled.Text`
 
 const Author = styled.Text`
   font-size: 13px;
-  color: #b8bece;
+  color: ${colors.main};
   font-weight: 500;
   margin-top: 4px;
 `;

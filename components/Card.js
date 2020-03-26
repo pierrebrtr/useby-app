@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import colors from "../styles/colors.js";
 
 const Card = props => (
   <Container style={{ elevation: 10 }}>
@@ -42,7 +43,7 @@ const Caption = styled.Text`
 `;
 
 const Subtitle = styled.Text`
-  color: #b8bece;
+  color: ${colors.main};
   font-weight: 600;
   font-size: 15px;
   text-transform: uppercase;

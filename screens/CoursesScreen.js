@@ -5,6 +5,7 @@ import CourseSection from "../components/CourseSection";
 import Courses from "../components/Courses";
 import { Dimensions } from "react-native";
 
+import colors from "../styles/colors.js";
 let screenWidth = Dimensions.get("window").width;
 
 class CoursesScreen extends React.Component {
@@ -55,7 +56,7 @@ class CoursesScreen extends React.Component {
 export default CoursesScreen;
 
 const Container = styled.View`
-  background: #f0f3f5;
+  background: ${colors.main_bg};
 `;
 
 const ScrollView = styled.ScrollView`
@@ -88,7 +89,7 @@ const Caption = styled.Text`
   font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
-  color: #b8bece;
+  color: ${colors.main};
   margin-top: 20px;
   margin-left: 20px;
 `;
@@ -127,14 +128,14 @@ const Avatar = styled.Image`
 
 const Name = styled.Text`
   margin-left: 8px;
-  color: #b8bece;
+  color: ${colors.main};
 `;
 
 const Subtitle = styled.Text`
   font-size: 15px;
   text-transform: uppercase;
   font-weight: 600;
-  color: #b8bece;
+  color: ${colors.main};
   margin: 20px 0 0 20px;
 `;
 

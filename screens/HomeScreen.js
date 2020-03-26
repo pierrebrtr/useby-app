@@ -250,7 +250,9 @@ class HomeScreen extends React.Component {
                   >
                     <ContainerLogo style={{ elevation: 5 }}>
                       <ImageLogo source={logo.image} resizeMode="contain" />
-                      <TextLogo>{logo.text}</TextLogo>
+                      {this.state.assetsLoaded ? (
+                        <TextLogo>{logo.text}</TextLogo>
+                      ) : null}
                     </ContainerLogo>
                   </TouchableOpacity>
                 ))}

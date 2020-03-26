@@ -23,27 +23,6 @@ import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-function mapStateToProps(state) {
-  return { action: state.action, name: state.name };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    openMenu: () =>
-      dispatch({
-        type: "OPEN_MENU"
-      }),
-    openLogin: () =>
-      dispatch({
-        type: "OPEN_LOGIN"
-      }),
-    openNotif: () =>
-      dispatch({
-        type: "OPEN_NOTIF"
-      })
-  };
-}
-
 class PlacardScreen extends React.Component {
   static navigationOptions = {
     headerShown: false
@@ -122,7 +101,7 @@ class PlacardScreen extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlacardScreen);
+export default PlacardScreen;
 
 const MainView = styled.View`
   z-index: 0;

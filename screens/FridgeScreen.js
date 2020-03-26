@@ -31,10 +31,6 @@ import FridgeProp from "../components/FridgeProp";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-function mapStateToProps(state) {
-  return { action: state.action, name: state.name };
-}
-
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 
@@ -76,13 +72,15 @@ class FridgeScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("Param : " + nextProps.navigation.state.params.product);
-    const p_name = nextProps.navigation.state.params.product;
-    const p_photo = nextProps.navigation.state.params.photo;
-    this.setState({ p_name, p_photo }, function() {
-      this.addItem();
-      this.HideComponent();
-    });
+    try {
+      console.log("Param : " + nextProps.navigation.state.params.product);
+      const p_name = nextProps.navigation.state.params.product;
+      const p_photo = nextProps.navigation.state.params.photo;
+      this.setState({ p_name, p_photo }, function() {
+        this.addItem();
+        this.HideComponent();
+      });
+    } catch (e) {}
   }
 
   addItem = (() => {
@@ -193,7 +191,7 @@ class FridgeScreen extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(FridgeScreen);
+export default FridgeScreen;
 
 const MainView = styled.View`
   z-index: 0;

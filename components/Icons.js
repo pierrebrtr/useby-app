@@ -7,8 +7,11 @@ import {
   MaterialIcons,
   Feather
 } from "@expo/vector-icons";
+import colors from "../styles/colors.js";
 
-export const NotificationIcon = props => <Feather name="bell" size={26} />;
+export const NotificationIcon = props => (
+  <Feather name="bell" size={26} color={colors.main_icon} />
+);
 
 export const PlayIcon = props => (
   <Svg height={38.15} width={38.15} {...props}>

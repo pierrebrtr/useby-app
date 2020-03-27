@@ -91,9 +91,17 @@ class FridgeScreen extends React.Component {
     this.setState({ isDatePickerVisible: true });
   }
 
-  hideDatePicker() {
+  hideDatePicker = () => {
     this.setState({ isDatePickerVisible: false });
-  }
+  };
+
+  cancelDatePicker = () => {
+    this.setState({ isDatePickerVisible: false });
+    this.setState({ p_date: " " }, function() {
+      this.addItem();
+      this.HideComponent();
+    });
+  };
 
   handleConfirm = date => {
     console.warn("A date has been picked: ", date);
@@ -242,7 +250,7 @@ class FridgeScreen extends React.Component {
           isVisible={this.state.isDatePickerVisible}
           mode="date"
           onConfirm={this.handleConfirm}
-          onCancel={this.hideDatePicker}
+          onCancel={this.cancelDatePicker}
         />
       </RootView>
     );

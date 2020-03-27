@@ -16,6 +16,7 @@ import MapScreen from "../screens/MapScreen";
 import BarCodeScreen from "../screens/BarCodeScreen";
 import ModalLoginBis from "../components/ModalLoginBis";
 import InventoryScreen from "../screens/InventoryScreen";
+import colors from "../styles/colors.js";
 
 const activeColor = "#4775f2";
 const inactiveColor = "#b8bece";
@@ -181,7 +182,8 @@ const TabNavigator = createBottomTabNavigator(
         width: "90%",
         borderRadius: 20,
         elevation: 10,
-        borderTopWidth: 0
+        borderTopWidth: 0,
+        backgroundColor: colors.main_bg
       }
     }
   }

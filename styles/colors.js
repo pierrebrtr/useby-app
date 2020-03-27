@@ -17,10 +17,12 @@ function MyComponent() {
 const colors = MyComponent()
   ? {
       main: "#b8bece",
-      main_bg: "#000"
+      main_bg: "#000",
+      main_icon: "#fff"
     }
   : {
       main: "#b8bece",
-      main_bg: "#f0f3f5"
+      main_bg: "#f0f3f5",
+      main_icon: "#000"
     };
 export default colors;

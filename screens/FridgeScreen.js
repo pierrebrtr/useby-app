@@ -19,6 +19,7 @@ import { SwitchActions } from "react-navigation";
 import LottieView from "lottie-react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Moment from "moment";
+import { AsyncStorage } from "react-native";
 
 import {
   Dimensions,
@@ -72,7 +73,10 @@ class FridgeScreen extends React.Component {
   };
 
   componentDidMount() {
+    console.log("Mounted");
+    //this.retrieveData();
     this.useEffect();
+
     StatusBar.setBarStyle("dark-content", true);
 
     if (Platform.OS == "android") {
@@ -104,7 +108,6 @@ class FridgeScreen extends React.Component {
   };
 
   handleConfirm = date => {
-    console.warn("A date has been picked: ", date);
     this.hideDatePicker();
     Moment.locale("fr");
     var dates = Moment(date).format("DD-MM-YYYY");
@@ -115,20 +118,28 @@ class FridgeScreen extends React.Component {
   };
 
   navigateToComponentB() {
+    this.clearParams();
     const { navigation } = this.props;
+    this.props.navigation.setParams({
+      photo: null,
+      product: null
+    });
     this.navigationListener = navigation.addListener("willFocus", payload => {
       this.removeNavigationListener();
-      const { state } = payload;
-      const { params } = state;
-      const { otherParam } = params;
-
       try {
-        const p_name = params.product;
-        const p_photo = params.photo;
+        const { state } = payload;
+        const { params } = state;
+        console.log("Params : ", params);
+        if (params.product) {
+          const p_name = params.product;
+          const p_photo = params.photo;
 
-        this.setState({ p_name, p_photo }, function() {
-          this.showDatePicker();
-        });
+          this.setState({ p_name, p_photo }, function() {
+            this.showDatePicker();
+          });
+        } else {
+          console.log("RETURN");
+        }
       } catch (e) {}
     });
 
@@ -146,6 +157,45 @@ class FridgeScreen extends React.Component {
   }
   componentWillUnmount() {
     this.removeNavigationListener();
+  }
+
+  saveState = async data => {
+    try {
+      await AsyncStorage.setItem("frigo-data", serializedState);
+    } catch (error) {}
+  };
+
+  retrieveData = async () => {
+    const value = await AsyncStorage.getItem("frigo-data");
+    if (value !== null) {
+      console.log(value);
+      jsoni = JSON.parse(value);
+      for (el of jsoni) {
+        if (el.title !== null) {
+          console.log("PARSING : ", el);
+          console.log("EL URI", el.uri);
+          this.addItemRe(el.uri, el.title, el.exp);
+        }
+      }
+    }
+  };
+
+  addItemRe(url, p_name, p_exp) {
+    let key = cards.length;
+    return () => {
+      const { cards } = this.state;
+      cards.unshift({
+        key,
+        uri: url,
+        title: p_name,
+        exp: p_exp
+      });
+
+      this.setState({
+        cards: cards.slice(0)
+      });
+      key++;
+    };
   }
 
   addItem = (() => {
@@ -223,6 +273,7 @@ class FridgeScreen extends React.Component {
                   height: "65%"
                 }}
                 numColumns={2}
+                extraData={this.state.refresh}
                 // ItemSeparatorComponent={() => <View />}
                 keyExtractor={item => item.key.toString()}
               />

@@ -27,7 +27,8 @@ const TabScreen = createMaterialTopTabNavigator(
       },
       labelStyle: {
         textAlign: "center",
-        fontFamily: "galano-bold"
+        fontFamily: "galano-bold",
+        fontSize: 17
       },
       indicatorStyle: {
         opacity: 0,

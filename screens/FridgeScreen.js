@@ -41,13 +41,18 @@ UIManager.setLayoutAnimationEnabledExperimental &&
 
 const imageUrl =
   "https://raw.githubusercontent.com/AboutReact/sampleresource/master/logosmalltransparen.png";
-const cards = [];
 
 function mapStateToProps(state) {
   return { action: state.action, name: state.name };
 }
 
 class FridgeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.array = [];
+  }
+
   static navigationOptions = {
     headerShown: false
   };
@@ -56,13 +61,13 @@ class FridgeScreen extends React.Component {
     //Menu
     scale: new Animated.Value(1),
     opacity: new Animated.Value(1),
-    cards,
     p_name: "Default",
     p_photo: "https://cl.ly/55da82beb939/download/avatar-default.jpg",
     p_date: "",
     show: true,
     isDatePickerVisible: false,
-    setDatePickerVisibility: false
+    setDatePickerVisibility: false,
+    arrayHolder: []
   };
 
   useEffect = () => {
@@ -73,8 +78,7 @@ class FridgeScreen extends React.Component {
   };
 
   componentDidMount() {
-    console.log("Mounted");
-    //this.retrieveData();
+    // this.retrieveData();
     this.useEffect();
 
     StatusBar.setBarStyle("dark-content", true);
@@ -86,8 +90,8 @@ class FridgeScreen extends React.Component {
 
   clearParams = () => {
     this.props.navigation.setParams({
-      backRoute: null,
-      routeImGoingNext: null
+      photo: null,
+      product: null
     });
   };
 
@@ -120,10 +124,6 @@ class FridgeScreen extends React.Component {
   navigateToComponentB() {
     this.clearParams();
     const { navigation } = this.props;
-    this.props.navigation.setParams({
-      photo: null,
-      product: null
-    });
     this.navigationListener = navigation.addListener("willFocus", payload => {
       this.removeNavigationListener();
       try {
@@ -138,7 +138,6 @@ class FridgeScreen extends React.Component {
             this.showDatePicker();
           });
         } else {
-          console.log("RETURN");
         }
       } catch (e) {}
     });
@@ -161,48 +160,32 @@ class FridgeScreen extends React.Component {
 
   saveState = async data => {
     try {
-      await AsyncStorage.setItem("frigo-data", serializedState);
+      const serializedState = JSON.stringify(data);
+      AsyncStorage.clear("frigo-data");
+      console.log("data : ", serializedState);
+      AsyncStorage.setItem("frigo-data", serializedState);
+      console.log("SAVED");
     } catch (error) {}
   };
 
   retrieveData = async () => {
+    console.log("RETRIEVING");
     const value = await AsyncStorage.getItem("frigo-data");
     if (value !== null) {
-      console.log(value);
-      jsoni = JSON.parse(value);
-      for (el of jsoni) {
+      console.log("RETRIEVE : ", value);
+      const jsoni = JSON.parse(value);
+      for (const el of jsoni) {
         if (el.title !== null) {
-          console.log("PARSING : ", el);
-          console.log("EL URI", el.uri);
           this.addItemRe(el.uri, el.title, el.exp);
         }
       }
     }
   };
 
-  addItemRe(url, p_name, p_exp) {
-    let key = cards.length;
-    return () => {
-      const { cards } = this.state;
-      cards.unshift({
-        key,
-        uri: url,
-        title: p_name,
-        exp: p_exp
-      });
-
-      this.setState({
-        cards: cards.slice(0)
-      });
-      key++;
-    };
-  }
-
   addItem = (() => {
-    let key = cards.length;
     return () => {
-      const { cards } = this.state;
-      cards.unshift({
+      let key = this.array.length;
+      this.array.push({
         key,
         uri: this.state.p_photo,
         title: this.state.p_name,
@@ -210,22 +193,23 @@ class FridgeScreen extends React.Component {
       });
 
       this.setState({
-        cards: cards.slice(0)
+        arrayHolder: [...this.array]
       });
       key++;
+
+      //this.saveState(cards);
     };
   })();
 
   removeItem = key => {
-    const { cards } = this.state;
-    console.log("Cards length : " + cards.length);
-    if (cards.length == 1) {
+    this.array.splice(key, 1);
+    this.setState({
+      arrayHolder: [...this.array]
+    });
+    console.log("Cards length : " + this.array.length);
+    if (this.array.length == 0) {
       this.ShowComponent();
     }
-
-    this.setState({
-      cards: cards.slice().filter(card => card.key !== key)
-    });
   };
 
   renderItem = ({ item }) => (
@@ -265,7 +249,7 @@ class FridgeScreen extends React.Component {
               ) : null}
               {this.state.show ? <Text>Ton frigo est vide</Text> : null}
               <FlatList
-                data={this.state.cards}
+                data={this.state.arrayHolder}
                 renderItem={this.renderItem}
                 style={{
                   position: "absolute",
@@ -273,7 +257,7 @@ class FridgeScreen extends React.Component {
                   height: "65%"
                 }}
                 numColumns={2}
-                extraData={this.state.refresh}
+                extraData={this.state.arrayHolder}
                 // ItemSeparatorComponent={() => <View />}
                 keyExtractor={item => item.key.toString()}
               />

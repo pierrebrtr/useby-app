@@ -38,10 +38,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, action: "openLogin" };
     case "CLOSE_LOGIN":
       return { ...state, action: "closeLogin" };
-    case "OPEN_FRIDGE":
-      return { ...state, action: "openFridge" };
-    case "CLOSE_FRIDGE":
-      return { ...state, action: "closeFridge" };
     case "OPEN_NOTIF":
       return { ...state, action: "openNotif" };
     case "CLOSE_NOTIF":

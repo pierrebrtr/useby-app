@@ -18,6 +18,7 @@ import Notifications from "../components/Notifications";
 import { SwitchActions } from "react-navigation";
 import LottieView from "lottie-react-native";
 import { Ionicons } from "@expo/vector-icons";
+import Moment from "moment";
 
 import {
   Dimensions,
@@ -29,7 +30,7 @@ import {
 } from "react-native";
 import FridgeProp from "../components/FridgeProp";
 import colors from "../styles/colors.js";
-import ModalFridge from "../components/ModalFridge";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -45,15 +46,6 @@ function mapStateToProps(state) {
   return { action: state.action, name: state.name };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    openFridge: () =>
-      dispatch({
-        type: "OPEN_FRIDGE"
-      })
-  };
-}
-
 class FridgeScreen extends React.Component {
   static navigationOptions = {
     headerShown: false
@@ -66,7 +58,10 @@ class FridgeScreen extends React.Component {
     cards,
     p_name: "Default",
     p_photo: "https://cl.ly/55da82beb939/download/avatar-default.jpg",
-    show: true
+    p_date: "",
+    show: true,
+    isDatePickerVisible: false,
+    setDatePickerVisibility: false
   };
 
   useEffect = () => {
@@ -75,12 +70,6 @@ class FridgeScreen extends React.Component {
     });
     return () => playAnimation.remove();
   };
-
-  componentDidUpdate() {
-    try {
-      console.log("TEST 2" + navigation.getParam("photo"));
-    } catch (e) {}
-  }
 
   componentDidMount() {
     this.useEffect();
@@ -98,6 +87,25 @@ class FridgeScreen extends React.Component {
     });
   };
 
+  showDatePicker() {
+    this.setState({ isDatePickerVisible: true });
+  }
+
+  hideDatePicker() {
+    this.setState({ isDatePickerVisible: false });
+  }
+
+  handleConfirm = date => {
+    console.warn("A date has been picked: ", date);
+    this.hideDatePicker();
+    Moment.locale("fr");
+    var dates = Moment(date).format("DD-MM-YYYY");
+    this.setState({ p_date: dates }, function() {
+      this.addItem();
+      this.HideComponent();
+    });
+  };
+
   navigateToComponentB() {
     const { navigation } = this.props;
     this.navigationListener = navigation.addListener("willFocus", payload => {
@@ -111,9 +119,7 @@ class FridgeScreen extends React.Component {
         const p_photo = params.photo;
 
         this.setState({ p_name, p_photo }, function() {
-          this.addItem();
-          this.HideComponent();
-          this.showFridge();
+          this.showDatePicker();
         });
       } catch (e) {}
     });
@@ -122,11 +128,6 @@ class FridgeScreen extends React.Component {
       returnToRoute: navigation.state,
       otherParam: this.state.otherParam
     });
-  }
-
-  showFridge() {
-    console.log("Opening fridge");
-    this.props.openFridge();
   }
 
   removeNavigationListener() {
@@ -147,7 +148,7 @@ class FridgeScreen extends React.Component {
         key,
         uri: this.state.p_photo,
         title: this.state.p_name,
-        exp: "12/02/20"
+        exp: this.state.p_date
       });
 
       this.setState({
@@ -237,13 +238,18 @@ class FridgeScreen extends React.Component {
             </CloseButton>
           </TouchableOpacity>
         </MainView>
-        <ModalFridge />
+        <DateTimePickerModal
+          isVisible={this.state.isDatePickerVisible}
+          mode="date"
+          onConfirm={this.handleConfirm}
+          onCancel={this.hideDatePicker}
+        />
       </RootView>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FridgeScreen);
+export default connect(mapStateToProps)(FridgeScreen);
 
 const MainView = styled.View`
   z-index: 0;

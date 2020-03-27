@@ -25,7 +25,19 @@ const BarCodeScreen = ({ navigation }) => {
         var name = response.product.product_name;
         var photo = response.product.image_small_url;
         // alert(name);
-        navigation.navigate("Frigo", { product: name, photo: photo });
+        // navigation.navigate("Frigo", {
+        //   product: name,
+        //   photo: photo
+        // });
+        const { routeName, key } = navigation.getParam("returnToRoute");
+        navigation.navigate({
+          routeName,
+          key,
+          params: {
+            product: name,
+            photo: photo
+          }
+        });
       });
   };
 

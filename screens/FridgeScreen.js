@@ -18,6 +18,7 @@ import Notifications from "../components/Notifications";
 import { SwitchActions } from "react-navigation";
 import LottieView from "lottie-react-native";
 import { Ionicons } from "@expo/vector-icons";
+
 import {
   Dimensions,
   FlatList,
@@ -28,6 +29,7 @@ import {
 } from "react-native";
 import FridgeProp from "../components/FridgeProp";
 import colors from "../styles/colors.js";
+import ModalFridge from "../components/ModalFridge";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -38,6 +40,19 @@ UIManager.setLayoutAnimationEnabledExperimental &&
 const imageUrl =
   "https://raw.githubusercontent.com/AboutReact/sampleresource/master/logosmalltransparen.png";
 const cards = [];
+
+function mapStateToProps(state) {
+  return { action: state.action, name: state.name };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    openFridge: () =>
+      dispatch({
+        type: "OPEN_FRIDGE"
+      })
+  };
+}
 
 class FridgeScreen extends React.Component {
   static navigationOptions = {
@@ -61,7 +76,11 @@ class FridgeScreen extends React.Component {
     return () => playAnimation.remove();
   };
 
-  componentDidUpdate() {}
+  componentDidUpdate() {
+    try {
+      console.log("TEST 2" + navigation.getParam("photo"));
+    } catch (e) {}
+  }
 
   componentDidMount() {
     this.useEffect();
@@ -72,16 +91,52 @@ class FridgeScreen extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    try {
-      console.log("Param : " + nextProps.navigation.state.params.product);
-      const p_name = nextProps.navigation.state.params.product;
-      const p_photo = nextProps.navigation.state.params.photo;
-      this.setState({ p_name, p_photo }, function() {
-        this.addItem();
-        this.HideComponent();
-      });
-    } catch (e) {}
+  clearParams = () => {
+    this.props.navigation.setParams({
+      backRoute: null,
+      routeImGoingNext: null
+    });
+  };
+
+  navigateToComponentB() {
+    const { navigation } = this.props;
+    this.navigationListener = navigation.addListener("willFocus", payload => {
+      this.removeNavigationListener();
+      const { state } = payload;
+      const { params } = state;
+      const { otherParam } = params;
+
+      try {
+        const p_name = params.product;
+        const p_photo = params.photo;
+
+        this.setState({ p_name, p_photo }, function() {
+          this.addItem();
+          this.HideComponent();
+          this.showFridge();
+        });
+      } catch (e) {}
+    });
+
+    navigation.push("Barcode", {
+      returnToRoute: navigation.state,
+      otherParam: this.state.otherParam
+    });
+  }
+
+  showFridge() {
+    console.log("Opening fridge");
+    this.props.openFridge();
+  }
+
+  removeNavigationListener() {
+    if (this.navigationListener) {
+      this.navigationListener.remove();
+      this.navigationListener = null;
+    }
+  }
+  componentWillUnmount() {
+    this.removeNavigationListener();
   }
 
   addItem = (() => {
@@ -92,7 +147,7 @@ class FridgeScreen extends React.Component {
         key,
         uri: this.state.p_photo,
         title: this.state.p_name,
-        description: ""
+        exp: "12/02/20"
       });
 
       this.setState({
@@ -101,10 +156,6 @@ class FridgeScreen extends React.Component {
       key++;
     };
   })();
-
-  addItem(StringHolder) {
-    Alert.alert(StringHolder);
-  }
 
   removeItem = key => {
     const { cards } = this.state;
@@ -162,6 +213,7 @@ class FridgeScreen extends React.Component {
                   width: "85%",
                   height: "65%"
                 }}
+                numColumns={2}
                 // ItemSeparatorComponent={() => <View />}
                 keyExtractor={item => item.key.toString()}
               />
@@ -170,7 +222,7 @@ class FridgeScreen extends React.Component {
           <FridgeView></FridgeView>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.push("Barcode");
+              this.navigateToComponentB();
             }}
             // onPress={this.addItem}
             style={{
@@ -185,13 +237,13 @@ class FridgeScreen extends React.Component {
             </CloseButton>
           </TouchableOpacity>
         </MainView>
-        <ModalLogin />
+        <ModalFridge />
       </RootView>
     );
   }
 }
 
-export default FridgeScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(FridgeScreen);
 
 const MainView = styled.View`
   z-index: 0;

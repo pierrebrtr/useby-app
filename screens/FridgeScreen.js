@@ -39,9 +39,6 @@ const screenHeight = Dimensions.get("window").height;
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 
-const imageUrl =
-  "https://raw.githubusercontent.com/AboutReact/sampleresource/master/logosmalltransparen.png";
-
 function mapStateToProps(state) {
   return { action: state.action, name: state.name };
 }
@@ -49,7 +46,6 @@ function mapStateToProps(state) {
 class FridgeScreen extends React.Component {
   constructor(props) {
     super(props);
-
     this.array = [];
   }
 
@@ -58,7 +54,6 @@ class FridgeScreen extends React.Component {
   };
 
   state = {
-    //Menu
     scale: new Animated.Value(1),
     opacity: new Animated.Value(1),
     p_name: "Default",
@@ -78,7 +73,7 @@ class FridgeScreen extends React.Component {
   };
 
   componentDidMount() {
-    // this.retrieveData();
+    this.retrieveData();
     this.useEffect();
 
     StatusBar.setBarStyle("dark-content", true);
@@ -161,22 +156,39 @@ class FridgeScreen extends React.Component {
   saveState = async data => {
     try {
       const serializedState = JSON.stringify(data);
-      AsyncStorage.clear("frigo-data");
-      console.log("data : ", serializedState);
+      AsyncStorage.removeItem("frigo-data");
+      console.log("ASYNC SAVE", serializedState);
       AsyncStorage.setItem("frigo-data", serializedState);
-      console.log("SAVED");
+
+      console.log("SAVED", serializedState);
     } catch (error) {}
   };
 
   retrieveData = async () => {
-    console.log("RETRIEVING");
     const value = await AsyncStorage.getItem("frigo-data");
     if (value !== null) {
       console.log("RETRIEVE : ", value);
       const jsoni = JSON.parse(value);
       for (const el of jsoni) {
         if (el.title !== null) {
-          this.addItemRe(el.uri, el.title, el.exp);
+          this.HideComponent();
+          let key = this.array.length;
+          this.array.push({
+            key,
+            uri: el.uri,
+            title: el.title,
+            exp: el.exp
+          });
+
+          this.setState(
+            {
+              arrayHolder: [...this.array]
+            },
+            function() {
+              this.saveState(this.state.arrayHolder);
+            }
+          );
+          key++;
         }
       }
     }
@@ -192,20 +204,28 @@ class FridgeScreen extends React.Component {
         exp: this.state.p_date
       });
 
-      this.setState({
-        arrayHolder: [...this.array]
-      });
+      this.setState(
+        {
+          arrayHolder: [...this.array]
+        },
+        function() {
+          this.saveState(this.state.arrayHolder);
+        }
+      );
       key++;
-
-      //this.saveState(cards);
     };
   })();
 
   removeItem = key => {
     this.array.splice(key, 1);
-    this.setState({
-      arrayHolder: [...this.array]
-    });
+    this.setState(
+      {
+        arrayHolder: [...this.array]
+      },
+      function() {
+        this.saveState(this.state.arrayHolder);
+      }
+    );
     console.log("Cards length : " + this.array.length);
     if (this.array.length == 0) {
       this.ShowComponent();

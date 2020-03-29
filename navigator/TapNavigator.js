@@ -17,9 +17,13 @@ import BarCodeScreen from "../screens/BarCodeScreen";
 import ModalLoginBis from "../components/ModalLoginBis";
 import InventoryScreen from "../screens/InventoryScreen";
 import colors from "../styles/colors.js";
+import { Dimensions } from "react-native";
 
 const activeColor = "#4775f2";
 const inactiveColor = "#b8bece";
+
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 const HomeStack = createStackNavigator(
   {
@@ -177,9 +181,9 @@ const TabNavigator = createBottomTabNavigator(
       showLabel: false,
       style: {
         position: "absolute",
-        left: "10%",
-        bottom: 10,
-        width: "90%",
+        left: screenWidth * 0.1,
+        bottom: screenHeight * 0.03,
+        width: screenWidth * 0.8,
         borderRadius: 20,
         elevation: 10,
         borderTopWidth: 0,

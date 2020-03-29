@@ -88,7 +88,7 @@ class HomeCardFridge extends React.Component {
             showsHorizontalScrollIndicator={false}
           >
             {items.map((item, index) => (
-              <MiniView>
+              <MiniView key={index}>
                 <ImageView>
                   <Image source={item.image} />
                 </ImageView>
@@ -109,8 +109,8 @@ const Fridge = styled.Image`
   width: 180px;
   height: 180px;
 
-  top: -40;
-  left: 200;
+  top: -40px;
+  left: 200px;
 `;
 
 const MiniView = styled.View`

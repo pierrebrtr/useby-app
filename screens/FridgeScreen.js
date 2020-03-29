@@ -14,12 +14,12 @@ import { connect } from "react-redux";
 import Avatar from "../components/Avatar";
 import ModalLogin from "../components/ModalLogin";
 import NotificationButton from "../components/NotificationButton";
-import Notifications from "../components/Notifications";
 import { SwitchActions } from "react-navigation";
 import LottieView from "lottie-react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Moment from "moment";
 import { AsyncStorage } from "react-native";
+import { Notifications } from "expo";
 
 import {
   Dimensions,
@@ -149,7 +149,7 @@ class FridgeScreen extends React.Component {
       this.navigationListener = null;
     }
   }
-  componentWillUnmount() {
+  UNSAFE_componentWillUnmount() {
     this.removeNavigationListener();
   }
 
@@ -157,20 +157,21 @@ class FridgeScreen extends React.Component {
     try {
       const serializedState = JSON.stringify(data);
       AsyncStorage.removeItem("frigo-data");
-      console.log("ASYNC SAVE", serializedState);
       AsyncStorage.setItem("frigo-data", serializedState);
-
-      console.log("SAVED", serializedState);
     } catch (error) {}
   };
 
   retrieveData = async () => {
+    Notifications.cancelAllScheduledNotificationsAsync();
     const value = await AsyncStorage.getItem("frigo-data");
     if (value !== null) {
-      console.log("RETRIEVE : ", value);
       const jsoni = JSON.parse(value);
       for (const el of jsoni) {
         if (el.title !== null) {
+          Notifications.scheduleLocalNotificationAsync(
+            { title: "Alerte Peromption", body: el.title + " bientot perimé" },
+            { time: new Date().getTime() + Number(1000) }
+          );
           this.HideComponent();
           let key = this.array.length;
           this.array.push({

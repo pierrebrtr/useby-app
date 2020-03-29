@@ -237,7 +237,7 @@ class HomeScreen extends React.Component {
                 ) : null}
 
                 {this.state.assetsLoaded ? (
-                  <Name>Bonjour, {this.props.name}</Name>
+                  <Name numberOfLines={1}>Bonjour, {this.props.name}</Name>
                 ) : null}
 
                 {/* <State>Etat : Presque vide</State> */}
@@ -265,6 +265,7 @@ class HomeScreen extends React.Component {
               >
                 {logos.map((logo, index) => (
                   <TouchableOpacity
+                    key={index}
                     onPress={() => this.handlePress(index)}
                     activeOpacity={0.6}
                   >
@@ -357,11 +358,11 @@ const TextLogo = styled.Text`
 `;
 
 const HomeCardView = styled.View`
-  padding-top: 170;
+  padding-top: 170px;
 `;
 
 const HomeCardViewB = styled.View`
-  padding-top: 0;
+  padding-top: 0px;
 `;
 
 const Message = styled.Text`
@@ -401,7 +402,7 @@ const AnimatedContainer = Animated.createAnimatedComponent(Container);
 const Title = styled.Text`
   font-size: 16px;
   color: ${colors.main};
-  top: 140;
+  top: 140px;
   left: -50px;
   font-family: "galano-light";
 `;
@@ -411,7 +412,7 @@ const Name = styled.Text`
   color: #3c4560;
   top: 80px;
   left: -50px;
-  width: 400px;
+  width: 300px;
 `;
 
 const TitleBar = styled.View`

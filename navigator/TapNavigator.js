@@ -97,13 +97,13 @@ const FridgeStack = createStackNavigator({
   Fridges: {
     screen: InventoryScreen,
     navigationOptions: {
-      header: null
+      headerShown: false
     }
   },
   Barcode: {
     screen: BarCodeScreen,
     navigationOptions: {
-      header: null
+      headerShown: false
     }
   }
 });

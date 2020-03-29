@@ -59,8 +59,8 @@ const Container = styled.View`
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0px;
+  left: 0px;
 `;
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);

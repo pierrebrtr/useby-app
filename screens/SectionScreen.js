@@ -16,7 +16,7 @@ class SectionScreen extends React.Component {
     StatusBar.setBarStyle("light-content", true);
   }
 
-  componentWillUnmount() {
+  UNSAFE_componentWillUnmount() {
     StatusBar.setBarStyle("light-content", true);
   }
 

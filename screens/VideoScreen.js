@@ -9,7 +9,7 @@ let screenHeight = Dimensions.get("window").height;
 
 class VideoScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    headerShown: false
   };
 
   render() {

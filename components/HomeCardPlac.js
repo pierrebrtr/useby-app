@@ -88,7 +88,7 @@ class HomeCardPlac extends React.Component {
             showsHorizontalScrollIndicator={false}
           >
             {items.map((item, index) => (
-              <MiniView>
+              <MiniView key={index}>
                 <ImageView>
                   <Image source={item.image} />
                 </ImageView>
@@ -109,8 +109,8 @@ const Plac = styled.Image`
   width: 140px;
   height: 140px;
 
-  top: 0;
-  left: 30;
+  top: 0px;
+  left: 30px;
 `;
 
 const MiniView = styled.View`

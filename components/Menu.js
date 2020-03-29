@@ -119,7 +119,7 @@ class Menu extends React.Component {
     }
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this._panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: (event, gestureState) => {
         if (gestureState.dx === 0 && gestureState.dy === 0) {

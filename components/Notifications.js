@@ -154,7 +154,7 @@ const Wrapper = styled.View`
 `;
 
 const Subtitle = styled.Text`
-  font-size: 15;
+  font-size: 15px;
   text-transform: uppercase;
   font-weight: 600;
   color: ${colors.main};

@@ -175,11 +175,7 @@ class HomeScreen extends React.Component {
   };
 
   handleAvatar = () => {
-    if (this.props.name !== "Inconnu") {
-      this.props.openMenu();
-    } else {
-      this.props.openLogin();
-    }
+    this.props.openMenu();
   };
 
   handleClick = () => {
@@ -214,7 +210,7 @@ class HomeScreen extends React.Component {
     console.disableYellowBox = true;
     return (
       <RootView onPress={this.handleAvatar}>
-        <Menu />
+        <Menu navigation={this.props.navigation} />
         <Notifications />
         <AnimatedContainer
           style={{

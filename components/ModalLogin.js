@@ -14,6 +14,7 @@ import firebase from "./Firebase";
 import { AsyncStorage } from "react-native";
 import { saveState } from "./AsyncStorage";
 import colors from "../styles/colors.js";
+import Menu from "./Menu";
 
 const screenHeight = Dimensions.get("window").height;
 

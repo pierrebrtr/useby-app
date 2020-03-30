@@ -292,7 +292,7 @@ class FridgeScreen extends React.Component {
             // onPress={this.addItem}
             style={{
               position: "absolute",
-              top: screenHeight * 0.97 - 200,
+              top: screenHeight * 0.97 - screenHeight * 0.25,
               left: screenWidth / 2 - 35,
               zIndex: 100
             }}

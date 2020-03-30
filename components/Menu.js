@@ -41,6 +41,10 @@ function mapDispatchToProps(dispatch) {
       dispatch({
         type: "UPDATE_AVATAR",
         avatar
+      }),
+    openLogin: () =>
+      dispatch({
+        type: "OPEN_LOGIN"
       })
   };
 }
@@ -48,10 +52,18 @@ function mapDispatchToProps(dispatch) {
 const screenHeight = Dimensions.get("window").height;
 
 class Menu extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     top: new Animated.Value(screenHeight + 100),
     pan: new Animated.ValueXY(),
-    assetsLoaded: false
+    assetsLoaded: false,
+    iconLogin: "md-lock",
+    titleLogin: "Connexion",
+    descriptionLogin: "Se connecter",
+    hasUpdated: false
   };
 
   retrieveName = async () => {
@@ -64,11 +76,7 @@ class Menu extends React.Component {
     } catch (error) {}
   };
 
-  componentDidMount() {
-    this.toggleMenu();
-    this.retrieveName();
-    this.useEffect();
-  }
+  componentDidMount() {}
   async componentDidMount() {
     await Font.loadAsync({
       "galano-bold": require("../assets/fonts/Galano-Grotesque-Bold.ttf"),
@@ -76,10 +84,41 @@ class Menu extends React.Component {
     });
 
     this.setState({ assetsLoaded: true });
+    this.toggleMenu();
+    this.retrieveName();
+    this.useEffect();
+    if (this.checkLogged()) {
+      this.setState({
+        titleLogin: "Deconnexion",
+        descriptionLogin: "Se deconnecter",
+        iconLogin: "ios-exit"
+      });
+    } else {
+    }
+  }
+
+  up = () => {
+    if (this.state.hasUpdated && this.props.name !== "Inconnu") {
+      this.setState({
+        titleLogin: "Deconnexion",
+        descriptionLogin: "Se deconnecter",
+        iconLogin: "ios-exit",
+        hasUpdated: false
+      });
+    }
+  };
+
+  checkLogged() {
+    if (this.props.name !== "Inconnu") {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   componentDidUpdate() {
     this.toggleMenu();
+    this.up();
   }
 
   toggleMenu = () => {
@@ -110,12 +149,27 @@ class Menu extends React.Component {
 
   handleMenu = index => {
     if (index == 3) {
-      this.props.closeMenu();
-      this.props.updateName("Inconnu");
-      this.props.updateAvatar(
-        "https://cl.ly/55da82beb939/download/avatar-default.jpg"
-      );
-      AsyncStorage.clear();
+      if (this.checkLogged()) {
+        this.props.closeMenu();
+        this.props.updateName("Inconnu");
+        this.props.updateAvatar(
+          "https://cl.ly/55da82beb939/download/avatar-default.jpg"
+        );
+        AsyncStorage.clear();
+        this.setState({
+          titleLogin: "Connexion",
+          descriptionLogin: "Se connecter",
+          iconLogin: "md-lock"
+        });
+      } else {
+        this.props.closeMenu();
+        setTimeout(() => {
+          this.props.openLogin();
+        }, 100);
+        this.setState({
+          hasUpdated: true
+        });
+      }
     }
   };
 
@@ -206,6 +260,18 @@ class Menu extends React.Component {
               <MenuItem icon={item.icon} title={item.title} text={item.text} />
             </TouchableOpacity>
           ))}
+
+          <TouchableOpacity
+            onPress={() => {
+              this.handleMenu(3);
+            }}
+          >
+            <MenuItem
+              icon={this.state.iconLogin}
+              title={this.state.titleLogin}
+              text={this.state.descriptionLogin}
+            />
+          </TouchableOpacity>
         </Content>
       </AnimatedContainer>
     );
@@ -296,7 +362,10 @@ const items = [
     icon: "ios-compass",
     title: "Support",
     text: "Un peu d'aide ? Une question ?"
-  },
+  }
+];
+
+const login = [
   {
     icon: "ios-exit",
     title: "Deconnexion",

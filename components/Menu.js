@@ -88,25 +88,28 @@ class Menu extends React.Component {
     this.retrieveName();
     this.useEffect();
     if (this.checkLogged()) {
-      this.setState({
-        titleLogin: "Deconnexion",
-        descriptionLogin: "Se deconnecter",
-        iconLogin: "ios-exit"
-      });
+      this.setDisconnect();
     } else {
     }
   }
 
   up = () => {
     if (this.state.hasUpdated && this.props.name !== "Inconnu") {
+      this.setDisconnect();
       this.setState({
-        titleLogin: "Deconnexion",
-        descriptionLogin: "Se deconnecter",
-        iconLogin: "ios-exit",
         hasUpdated: false
       });
     }
   };
+
+  setDisconnect() {
+    this.setState({
+      titleLogin: "Deconnexion",
+      descriptionLogin: "Se deconnecter",
+      iconLogin: "ios-exit",
+      hasUpdated: false
+    });
+  }
 
   checkLogged() {
     if (this.props.name !== "Inconnu") {
@@ -362,13 +365,5 @@ const items = [
     icon: "ios-compass",
     title: "Support",
     text: "Un peu d'aide ? Une question ?"
-  }
-];
-
-const login = [
-  {
-    icon: "ios-exit",
-    title: "Deconnexion",
-    text: "Bye bye !"
   }
 ];
